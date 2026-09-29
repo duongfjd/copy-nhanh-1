@@ -255,7 +255,7 @@
     <!-- CỘT 3: NHÓM NÚT LỌC VÀ Ô TÌM KIẾM -->
     <div class="action-panel">
       <div class="filter-wrapper">
-        <input type="text" class="search-input" id="searchTemplate" placeholder="🔍 Gõ số (03, 87) hoặc chữ (quyet dinh, nghi quyet, phieu)..." autofocus autocomplete="off">
+        <input type="text" class="search-input" id="searchTemplate" placeholder="🔍 Gõ số (03, 87) hoặc chữ (quyet dinh, nghi quyet, phieu, muc luc)..." autofocus autocomplete="off">
         
         <div style="font-size: 11px; font-weight: 700; color: #475569; margin-top: 2px;">TỪ KHÓA ĐẦU CỦA VĂN BẢN:</div>
         <div class="category-grid">
@@ -301,7 +301,7 @@
   <div class="status-toast" id="statusToast"></div>
 
   <script>
-    // 106 MỤC CHUẨN HOÁ KÈM PHÂN NHÓM DANH MỤC
+    // 106 MỤC CHUẨN HOÁ (MỤC 106 ĐƯỢC ĐẶT LÀ 'MUC LUC')
     const TEMPLATES = [
       { id: "01", name: "01.Ly lich cua nguoi xin vao dang", label: "Lý lịch của người xin vào Đảng", cat: "LY_LICH" },
       { id: "02", name: "02.Ly lich dang vien", label: "Lý lịch đảng viên", cat: "LY_LICH" },
@@ -408,7 +408,7 @@
       { id: "103", name: "103.To khai de nghi tang Huy hieu Dang", label: "Tờ khai đề nghị tặng Huy hiệu Đảng", cat: "DON_TOKHAI" },
       { id: "104", name: "104.To khai de nghi truy tang Huy hieu Dang", label: "Tờ khai đề nghị truy tặng Huy hiệu Đảng", cat: "DON_TOKHAI" },
       { id: "105", name: "105.Tai lieu khac", label: "Tài liệu khác trong hồ sơ", cat: "KHAC" },
-      { id: "106", name: "MUCLUC", label: "Mục lục hồ sơ (không có tiền tố số)", cat: "KHAC" }
+      { id: "106", name: "MUC LUC", label: "Mục lục hồ sơ (không có tiền tố số)", cat: "KHAC" }
     ];
 
     let directoryHandle = null;
@@ -418,7 +418,7 @@
     let originalCurrentFileName = "";
     let hideRenamed = false;
     let pendingFileToAutoFix = null;
-    let currentCategory = "ALL"; // Lưu trữ bộ lọc hiện tại
+    let currentCategory = "ALL";
 
     const btnSelectFolder = document.getElementById('btnSelectFolder');
     const fileListContainer = document.getElementById('fileListContainer');
@@ -443,7 +443,6 @@
 
     newFileNamePreview.addEventListener('input', autoResizeTextarea);
 
-    // XỬ LÝ CHỌN TAB LỌC
     window.setCategoryFilter = function(cat, btn) {
       currentCategory = cat;
       document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
@@ -451,7 +450,6 @@
       renderTemplates(searchTemplate.value);
     };
 
-    // LỌC DANH MỤC THEO CẢ TỪ KHÓA LẪN NÚT DANH MỤC
     function renderTemplates(filter = "") {
       templateListContainer.innerHTML = "";
       const keyword = filter.toLowerCase().trim();
@@ -494,7 +492,6 @@
       }
     });
 
-    // Dò tìm số bản phụ thông minh tránh trùng lặp
     function getSmartSuffix(baseName) {
       pendingFileToAutoFix = null;
       let maxSuffix = -1; 
@@ -675,7 +672,6 @@
         return;
       }
 
-      // Tự động đồng bộ file cũ sang .1 nếu có
       if (pendingFileToAutoFix && pendingFileToAutoFix.name !== currentHandle.name) {
         try {
           const oldTargetName = pendingFileToAutoFix.name.replace(/\.pdf$/i, '.1.pdf');
@@ -690,7 +686,6 @@
         }
       }
 
-      // Kiểm tra trùng tên với file khác
       const existsIndex = fileHandlesList.findIndex(f => f.name.toLowerCase() === newName.toLowerCase());
       if (existsIndex !== -1 && existsIndex !== currentSelectedFileIndex) {
         if(!confirm(`⚠️ File "${newName}" ĐÃ TỒN TẠI!\n\nBạn có muốn ghi đè lên không?`)) {
