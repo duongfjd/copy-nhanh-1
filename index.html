@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trình Quản Lý & Đổi Tên Hồ Sơ Đảng Viên PDF - Bản Pro Max</title>
+  <title>Trình Quản Lý & Đổi Tên Hồ Sơ Cán Bộ PDF (Chuẩn A3711 Pro)</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -14,84 +15,290 @@
       --text: #0f172a;
       --text-muted: #64748b;
       --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #d97706;
       --accent: #eff6ff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header */
     header {
       background: var(--card-bg);
       border-bottom: 1px solid var(--border);
-      padding: 10px 20px;
+      padding: 8px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      gap: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
-    .header-left { display: flex; align-items: center; gap: 20px; }
-    .header-title { font-weight: 700; font-size: 15px; color: var(--primary); }
-    
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--primary);
+    }
+
     .btn {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 6px 11px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
-      font-size: 13px;
+      font-size: 12.5px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s ease;
     }
-    .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-    .btn-success { background: var(--success); }
-    .btn-success:hover { background: #15803d; }
 
-    .progress-box { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); }
-    .progress-bar-bg { width: 140px; height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
-    .progress-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
 
-    .main-container { display: flex; flex: 1; overflow: hidden; }
+    .btn-main {
+      background: #0284c7;
+    }
 
-    /* Cột 1: Danh sách File */
+    .btn-main:hover {
+      background: #0369a1;
+    }
+
+    .btn-orig {
+      background: #475569;
+    }
+
+    .btn-orig:hover {
+      background: #334155;
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    .btn-undo {
+      background: #64748b;
+    }
+
+    .btn-undo:hover {
+      background: #475569;
+    }
+
+    .btn-outline {
+      background: white;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-outline:hover {
+      background: #f8fafc;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #b45309;
+    }
+
+    .progress-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-bg {
+      width: 110px;
+      height: 7px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--success);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Layout */
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Cột 1: Danh sách file */
     .file-panel {
-      width: 310px;
+      width: 360px;
       background: var(--card-bg);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
     }
-    .panel-title {
-      padding: 10px 14px;
-      font-weight: 600;
-      font-size: 12.5px;
+
+    .file-tabs {
+      padding: 6px 10px;
       border-bottom: 1px solid var(--border);
       background: #f8fafc;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-muted);
+      gap: 3px;
+      flex-wrap: wrap;
     }
-    .file-list { flex: 1; overflow-y: auto; list-style: none; }
+
+    .tab-btn {
+      padding: 3px 7px;
+      font-size: 11px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .file-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+    }
+
     .file-item {
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-bottom: 1px solid #f1f5f9;
       cursor: pointer;
-      font-size: 12.5px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: background 0.1s;
+    }
+
+    .file-item:hover {
+      background: #f8fafc;
+    }
+
+    .file-item.active {
+      background: var(--accent);
+      border-left: 3px solid var(--primary);
+      font-weight: 600;
+    }
+
+    .file-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 6px;
     }
-    .file-item:hover { background: #f8fafc; }
-    .file-item.active { background: var(--accent); color: var(--primary); font-weight: 600; border-left: 3px solid var(--primary); }
-    .file-name-span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px; }
-    .badge-ok { font-size: 10.5px; color: var(--success); font-weight: 700; background: #dcfce7; padding: 2px 6px; border-radius: 4px; white-space: nowrap; margin-left: 6px; }
 
-    /* Cột 2: Preview PDF */
+    .file-name-span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .inline-arrows {
+      display: inline-flex;
+      gap: 2px;
+      align-items: center;
+    }
+
+    .btn-arrow-sm {
+      padding: 2px 5px;
+      font-size: 10px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      border-radius: 3px;
+      cursor: pointer;
+      color: #334155;
+      line-height: 1.1;
+      font-weight: bold;
+    }
+
+    .btn-arrow-sm:hover:not([disabled]) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn-arrow-sm[disabled] {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .badge-ok {
+      color: var(--success);
+      background: #dcfce7;
+    }
+
+    .badge-pending {
+      color: #64748b;
+      background: #f1f5f9;
+    }
+
+    .badge-missing {
+      color: var(--danger);
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+    }
+
+    .badge-dup {
+      color: var(--warning);
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+    }
+
+    /* Cột 2: Preview PDF chính */
     .preview-panel {
       flex: 1;
       background: #334155;
@@ -99,10 +306,35 @@
       flex-direction: column;
       position: relative;
     }
-    .preview-panel iframe { width: 100%; height: 100%; border: none; }
-    .no-preview { display: flex; align-items: center; justify-content: center; height: 100%; color: #94a3b8; font-size: 14px; text-align: center; line-height: 1.6; }
 
-    /* Cột 3: Bộ lọc nút bấm & Mẫu */
+    .preview-top-bar {
+      background: #1e293b;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-panel iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .no-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #94a3b8;
+      font-size: 13.5px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Cột 3: Bộ lọc & Mẫu chuẩn A3711 */
     .action-panel {
       width: 440px;
       background: var(--card-bg);
@@ -110,36 +342,42 @@
       display: flex;
       flex-direction: column;
     }
+
     .filter-wrapper {
-      padding: 10px 12px;
+      padding: 8px 12px;
       border-bottom: 1px solid var(--border);
       background: #f8fafc;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     .search-input {
       width: 100%;
-      padding: 8px 12px;
+      padding: 7px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
       outline: none;
-      font-size: 13px;
+      font-size: 12.5px;
       background: #ffffff;
     }
-    .search-input:focus { border-color: var(--primary); }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
 
     .category-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      max-height: 110px;
+      gap: 3px;
+      max-height: 90px;
       overflow-y: auto;
       padding-top: 2px;
     }
+
     .tag-btn {
-      font-size: 11px;
-      padding: 4px 8px;
+      font-size: 10.5px;
+      padding: 3px 6px;
       border-radius: 4px;
       border: 1px solid #cbd5e1;
       background: #ffffff;
@@ -147,153 +385,471 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       font-weight: 500;
-      transition: all 0.12s;
     }
-    .tag-btn:hover { background: #e2e8f0; }
+
+    .tag-btn:hover {
+      background: #e2e8f0;
+    }
+
     .tag-btn.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
       font-weight: 600;
     }
+
     .tag-btn-all.active {
       background: #334155;
       border-color: #334155;
     }
 
-    .templates-list { flex: 1; overflow-y: auto; list-style: none; }
-    .template-item { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
-    .template-item:hover { background: #f8fafc; }
-    .template-item.selected { background: var(--accent); }
-    .template-tag { font-size: 11px; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; color: var(--text-muted); font-weight: 600; }
+    .templates-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+    }
+
+    .template-item {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .template-item:hover {
+      background: #f8fafc;
+    }
 
     /* Rename Footer */
     .rename-footer {
-      padding: 12px;
+      padding: 10px 12px;
       background: #f8fafc;
       border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
-    .rename-header { display: flex; justify-content: space-between; align-items: center; }
-    .rename-title { font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-    .btn-reset { font-size: 11px; color: var(--primary); background: none; border: none; cursor: pointer; text-decoration: underline; padding: 0; }
 
     .rename-preview-textarea {
       width: 100%;
-      min-height: 55px;
-      max-height: 120px;
+      min-height: 52px;
+      max-height: 100px;
       padding: 6px 10px;
       border: 2px solid var(--primary);
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.4;
-      font-family: inherit;
       font-weight: 600;
       color: #0f172a;
       resize: vertical;
-      overflow-y: auto;
       outline: none;
       word-break: break-all;
     }
-    .rename-preview-textarea:focus { border-color: #1e3a8a; background: #ffffff; }
 
-    .rename-options { display: flex; gap: 8px; align-items: center; }
-    .suffix-input { width: 65px; padding: 7px 6px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-align: center; }
-    
-    .shortcut-hint { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; border-top: 1px dashed var(--border); padding-top: 6px; }
+    .rename-options {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .suffix-input {
+      width: 65px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12.5px;
+      text-align: center;
+    }
+
+    .shortcut-hint {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dashed var(--border);
+      padding-top: 5px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13.5px;
+      background: #ffffff;
+    }
+
+    .modal-footer {
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      background: #f8fafc;
+    }
+
+    /* Modal Bảng đổi số loạt mở rộng (Split-screen) */
+    .modal-reorder-window {
+      background: white;
+      border-radius: 8px;
+      width: 96vw;
+      max-width: 1450px;
+      height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-reorder-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .reorder-left-pane {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      padding: 12px;
+      overflow-y: auto;
+      background: white;
+    }
+
+    .reorder-right-pane {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      background: #334155;
+      position: relative;
+    }
+
+    .reorder-preview-bar {
+      background: #1e293b;
+      color: white;
+      padding: 7px 12px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reorder-right-pane iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .reorder-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .reorder-table th,
+    .reorder-table td {
+      padding: 7px 8px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .reorder-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .reorder-table tr.active-row {
+      background: #e0f2fe !important;
+    }
+
+    .reorder-table tr:hover {
+      background: #f8fafc;
+    }
+
+    /* Modal Audit */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .audit-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      background: #f8fafc;
+    }
+
+    .audit-card-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .audit-list {
+      list-style: none;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .audit-item {
+      padding: 5px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+    }
 
     .status-toast {
-      position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 10px 16px; border-radius: 6px; font-size: 13px; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+      z-index: 3000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
     }
   </style>
 </head>
+
 <body>
 
   <header>
     <div class="header-left">
-      <div class="header-title">📁 ĐỔI TÊN HỒ SƠ ĐẢNG VIÊN PDF</div>
+      <div class="header-title">🛡️ HỆ THỐNG ĐỔI TÊN HỒ SƠ CÁN BỘ (CHUẨN A3711 PRO)</div>
       <div class="progress-box">
         <span>Tiến độ:</span>
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
         <span id="progressText" style="font-weight: 600;">0/0</span>
       </div>
     </div>
-    <div>
-      <button class="btn" id="btnSelectFolder">📂 Mở Thư Mục PDF</button>
+    <div style="display: flex; gap: 6px; align-items: center;">
+      <button class="btn btn-main" id="btnSelectWorkingDir">📂 1. Chọn Thư Mục Làm Việc</button>
+      <button class="btn btn-orig" id="btnSelectOrigDir"
+        title="Tùy chọn: Chọn để đối chiếu xem có file nào bị thiếu/trùng không">📁 2. Thư Mục GỐC (Đối chiếu)</button>
+      <button class="btn btn-warning" id="btnOpenReorder" title="Xem PDF và sắp xếp lại số bản phụ ngay trong bảng">🔢
+        Bảng Đổi Số Loạt (Có Xem PDF)</button>
+      <button class="btn btn-outline" id="btnOpenAudit">📊 Báo Cáo Thiếu/Đủ</button>
+      <button class="btn btn-undo" id="btnUndo" title="Phím tắt Ctrl+Z">↩️ Hoàn tác</button>
     </div>
   </header>
 
   <div class="main-container">
-    <!-- CỘT 1: DANH SÁCH FILE TRONG THƯ MỤC -->
+    <!-- CỘT 1: DANH SÁCH FILE CÓ NÚT LÊN XUỐNG KHÓA THEO ID -->
     <div class="file-panel">
-      <div class="panel-title">
-        <span>FILE PDF (<span id="fileCount">0</span>)</span>
-        <label style="font-size: 11.5px; cursor: pointer; color: var(--primary); display: flex; align-items: center; gap: 4px;">
-          <input type="checkbox" id="hideRenamedCb"> Ẩn file đã chuẩn
-        </label>
+      <div class="file-tabs">
+        <button class="tab-btn active" onclick="setTabFilter('ALL', this)">Tất cả (<span id="cntAll">0</span>)</button>
+        <button class="tab-btn" onclick="setTabFilter('UNFINISHED', this)">Chưa chuẩn (<span
+            id="cntUnfinished">0</span>)</button>
+        <button class="tab-btn" onclick="setTabFilter('FINISHED', this)">Đã chuẩn (<span
+            id="cntFinished">0</span>)</button>
+        <button class="tab-btn" id="tabBtnMissing" onclick="setTabFilter('MISSING', this)"
+          style="display:none; color:var(--danger); font-weight:700;">Bị thiếu (<span id="cntMissing">0</span>)</button>
+        <button class="tab-btn" id="tabBtnDup" onclick="setTabFilter('DUP', this)"
+          style="display:none; color:var(--warning); font-weight:700;">Trùng nội dung (<span
+            id="cntDup">0</span>)</button>
       </div>
+
       <ul class="file-list" id="fileListContainer">
         <li style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 13px;">
-          Nhấn nút <b>"Mở Thư Mục PDF"</b> phía trên để bắt đầu.
+          Bấm nút xanh <b>"📂 1. Chọn Thư Mục Làm Việc"</b> phía trên để bắt đầu ngay.
         </li>
       </ul>
     </div>
 
     <!-- CỘT 2: PREVIEW PDF -->
     <div class="preview-panel">
-      <div class="no-preview" id="emptyPreview">
-        Chọn file PDF từ danh sách bên trái để đọc nội dung<br>
-        <span style="font-size: 12px; color: #94a3b8;">(Dùng phím Alt + Mũi tên Lên/Xuống để duyệt liên tục)</span>
+      <div class="preview-top-bar">
+        <span id="previewTitle">Xem nội dung văn bản</span>
+        <span id="previewMeta" style="color:#94a3b8;">Chưa chọn file</span>
       </div>
+      <div class="no-preview" id="emptyPreview">Chọn file PDF từ danh sách bên trái để đọc nội dung</div>
       <iframe id="pdfViewer" style="display: none;"></iframe>
     </div>
 
-    <!-- CỘT 3: NHÓM NÚT LỌC VÀ Ô TÌM KIẾM -->
+    <!-- CỘT 3: BỘ LỌC NÚT BẤM & MẪU CHUẨN A3711 -->
     <div class="action-panel">
       <div class="filter-wrapper">
-        <input type="text" class="search-input" id="searchTemplate" placeholder="🔍 Gõ số (03, 87) hoặc chữ (quyet dinh, nghi quyet, phieu, muc luc)..." autofocus autocomplete="off">
-        
-        <div style="font-size: 11px; font-weight: 700; color: #475569; margin-top: 2px;">TỪ KHÓA ĐẦU CỦA VĂN BẢN:</div>
+        <input type="text" class="search-input" id="searchTemplate"
+          placeholder="🔍 Gõ số (01, 28, 42) hoặc chữ (so yeu, bang, quyet dinh)..." autofocus autocomplete="off">
+
+        <div style="font-size: 10.5px; font-weight: 700; color: #475569;">TỪ KHÓA NHÓM VĂN BẢN:</div>
         <div class="category-grid">
-          <button class="tag-btn tag-btn-all active" onclick="setCategoryFilter('ALL', this)">📂 Hiện tất cả (105+ mục)</button>
-          <button class="tag-btn" onclick="setCategoryFilter('QUYET_DINH', this)">⚖️ Quyết định</button>
-          <button class="tag-btn" onclick="setCategoryFilter('NGHI_QUYET', this)">📜 Nghị quyết</button>
-          <button class="tag-btn" onclick="setCategoryFilter('PHIEU', this)">📋 Phiếu</button>
-          <button class="tag-btn" onclick="setCategoryFilter('KIEM_DIEM', this)">✍️ Bản kiểm điểm / Nhận xét</button>
+          <button class="tag-btn tag-btn-all active" onclick="setCategoryFilter('ALL', this)">📂 Tất cả (91+)</button>
           <button class="tag-btn" onclick="setCategoryFilter('LY_LICH', this)">📁 Lý lịch</button>
-          <button class="tag-btn" onclick="setCategoryFilter('DON_TOKHAI', this)">✉️ Đơn / Tờ khai</button>
-          <button class="tag-btn" onclick="setCategoryFilter('CHUNG_NHAN_XAC_NHAN', this)">🎓 Giấy chứng nhận / Xác nhận</button>
-          <button class="tag-btn" onclick="setCategoryFilter('GIOI_THIEU', this)">📇 Giấy giới thiệu</button>
-          <button class="tag-btn" onclick="setCategoryFilter('CONG_VAN_BAO_CAO', this)">📨 Công văn / Báo cáo / Kết luận</button>
-          <button class="tag-btn" onclick="setCategoryFilter('KHAC', this)">📦 Bằng cấp / Hộ tịch / Khác</button>
+          <button class="tag-btn" onclick="setCategoryFilter('GIAY_TO', this)">🪪 Giấy tờ tùy thân</button>
+          <button class="tag-btn" onclick="setCategoryFilter('BANG_CAP', this)">🎓 Bằng cấp</button>
+          <button class="tag-btn" onclick="setCategoryFilter('CHUNG_CHI', this)">📜 Chứng chỉ</button>
+          <button class="tag-btn" onclick="setCategoryFilter('TUYEN_DUNG', this)">💼 Tuyển dụng & HĐ</button>
+          <button class="tag-btn" onclick="setCategoryFilter('QUYET_DINH', this)">⚖️ Quyết định</button>
+          <button class="tag-btn" onclick="setCategoryFilter('TO_TRINH', this)">📝 Tờ trình</button>
+          <button class="tag-btn" onclick="setCategoryFilter('VAN_BAN_BC', this)">📨 Văn bản & Báo cáo</button>
+          <button class="tag-btn" onclick="setCategoryFilter('DANH_GIA_KHAC', this)">📦 Đánh giá & Khác</button>
         </div>
       </div>
-      
+
       <ul class="templates-list" id="templateListContainer"></ul>
 
       <div class="rename-footer">
-        <div class="rename-header">
-          <span class="rename-title">Tên File Mới Dự Kiến:</span>
-          <button class="btn-reset" id="btnResetOriginal">Lấy lại tên gốc</button>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">TÊN FILE MỚI DỰ
+            KIẾN:</span>
+          <button
+            style="border:none;background:none;color:var(--primary);cursor:pointer;font-size:11px;text-decoration:underline;"
+            id="btnResetOriginal">Lấy lại tên gốc</button>
         </div>
 
-        <textarea class="rename-preview-textarea" id="newFileNamePreview" placeholder="Chọn mẫu ở trên hoặc chỉnh sửa trực tiếp..."></textarea>
-        
+        <textarea class="rename-preview-textarea" id="newFileNamePreview"
+          placeholder="Chọn mẫu ở trên hoặc chỉnh sửa trực tiếp..."></textarea>
+
         <div class="rename-options">
-          <label style="font-size: 12px; color: var(--text-muted); white-space: nowrap;">Bản phụ:</label>
+          <label style="font-size:12px;color:var(--text-muted);white-space:nowrap;">Bản phụ:</label>
           <input type="text" class="suffix-input" id="subVersion" placeholder=".1, .2">
-          <button class="btn btn-success" id="btnApplyRename" style="flex: 1; justify-content: center; font-size: 13.5px;">💾 Lưu Tên File (Ctrl+Enter)</button>
+          <button class="btn btn-success" id="btnApplyRename" style="flex:1;justify-content:center;font-size:13.5px;">💾
+            Lưu Tên File (Ctrl+Enter)</button>
         </div>
 
         <div class="shortcut-hint">
-          <span><b>Ctrl+Enter</b>: Lưu nhanh</span>
+          <span><b>Ctrl+Enter</b>: Lưu & Tự nhảy đến file chưa chuẩn</span>
+          <span><b>Ctrl+Z</b>: Hoàn tác Undo</span>
           <span><b>Alt+↑/↓</b>: Chuyển file</span>
-          <span><b>F2</b>: Tìm mẫu</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: BẢNG ĐỔI SỐ LOẠT MỞ RỘNG (SPLIT-SCREEN) -->
+  <div class="modal-overlay" id="reorderModal">
+    <div class="modal-reorder-window">
+      <div class="modal-header">
+        <span>🔢 BẢNG SẮP XẾP & ĐÁNH SỐ LẠI BẢN PHỤ (XEM VÀ ĐỔI TRỰC TIẾP TẠI ĐÂY)</span>
+        <button style="border:none;background:none;cursor:pointer;font-size:16px;"
+          onclick="closeModal('reorderModal')">✕</button>
+      </div>
+
+      <div class="modal-reorder-body">
+        <div class="reorder-left-pane">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+            <label style="font-weight:700; font-size:12.5px; white-space:nowrap;">Chọn nhóm ID:</label>
+            <select id="reorderGroupSelect" class="search-input" style="flex:1; font-weight:600; color:var(--primary);">
+              <option value="">-- Chọn nhóm theo mã ID --</option>
+            </select>
+          </div>
+
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; background:#f1f5f9; padding:6px 10px; border-radius:6px;">
+            <label
+              style="font-size:11.5px; cursor:pointer; display:flex; align-items:center; gap:5px; font-weight:600;">
+              <input type="checkbox" id="cbStandardizeName"> Đồng bộ về tên chuẩn của mẫu
+            </label>
+            <button class="btn btn-outline" style="font-size:11px; padding:3px 8px;"
+              onclick="autoNumberSequentially()">⚡ Gán số 1 ➔ N</button>
+          </div>
+
+          <div style="flex:1; overflow-y:auto;">
+            <table class="reorder-table">
+              <thead>
+                <tr>
+                  <th style="width:35px; text-align:center;">Xem</th>
+                  <th>Tên file hiện tại</th>
+                  <th style="width:65px; text-align:center;">Thứ tự</th>
+                  <th style="width:65px; text-align:center;">Số mới</th>
+                  <th>Tên file mục tiêu</th>
+                </tr>
+              </thead>
+              <tbody id="reorderTableBody">
+                <tr>
+                  <td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">
+                    Vui lòng chọn nhóm ID ở phía trên.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="reorder-right-pane">
+          <div class="reorder-preview-bar">
+            <span id="modalPreviewTitle"
+              style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Xem trước PDF</span>
+            <span style="font-size:11px; color:#cbd5e1;">(Bấm dòng bên trái để đổi file xem)</span>
+          </div>
+          <div id="modalEmptyPreview" class="no-preview">Bấm biểu tượng 👁️ hoặc nhấp vào dòng bên trái để đọc PDF tại
+            đây</div>
+          <iframe id="modalPdfViewer" style="display: none;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-undo" onclick="closeModal('reorderModal')">Đóng</button>
+        <button class="btn btn-success" style="font-size:13px; font-weight:bold;" onclick="applyBatchReorder()">💾 Áp
+          Dụng Đổi Số Toàn Bộ Nhóm Này</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ĐỐI SOÁT & BÁO CÁO THIẾU -->
+  <div class="modal-overlay" id="auditModal">
+    <div class="modal-content"
+      style="background:white; border-radius:8px; width:780px; max-width:95vw; max-height:85vh; display:flex; flex-direction:column; overflow:hidden;">
+      <div class="modal-header">
+        <span>📊 ĐỐI SOÁT HỒ SƠ & CÁC ĐẦU MỤC CÒN THIẾU</span>
+        <button style="border:none;background:none;cursor:pointer;font-size:16px;"
+          onclick="closeModal('auditModal')">✕</button>
+      </div>
+      <div class="modal-body" style="padding:14px; overflow-y:auto; flex:1;">
+        <div class="audit-grid">
+          <div class="audit-card">
+            <div class="audit-card-title">
+              <span>ĐỐI CHIẾU TRƯỚC VÀ SAU</span>
+              <span id="auditRenamedCount" style="color:var(--success);">0 file</span>
+            </div>
+            <ul class="audit-list" id="auditRenameList">
+              <li style="padding:15px;text-align:center;color:var(--text-muted);">Chưa có thay đổi nào.</li>
+            </ul>
+          </div>
+          <div class="audit-card">
+            <div class="audit-card-title">
+              <span>CÁC ĐẦU MỤC CHƯA CÓ TRONG HỒ SƠ</span>
+              <button class="btn btn-outline" style="font-size:11px;padding:2px 6px;" onclick="copyMissingItems()">📋
+                Sao chép DS</button>
+            </div>
+            <ul class="audit-list" id="auditMissingList"></ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-undo" onclick="closeModal('auditModal')">Đóng</button>
       </div>
     </div>
   </div>
@@ -301,149 +857,627 @@
   <div class="status-toast" id="statusToast"></div>
 
   <script>
-    // 106 MỤC CHUẨN HOÁ (CHỈ VIẾT HOA CHỮ ĐẦU TIÊN CỦA VĂN BẢN, TOÀN BỘ CHỮ DANG/DANG VIEN ĐỀU VIẾT THƯỜNG)
-    const TEMPLATES = [
-      { id: "01", name: "01.Ly lich cua nguoi xin vao dang", label: "Lý lịch của người xin vào Đảng", cat: "LY_LICH" },
-      { id: "02", name: "02.Ly lich dang vien", label: "Lý lịch đảng viên", cat: "LY_LICH" },
-      { id: "03", name: "03.Phieu dang vien", label: "Phiếu đảng viên", cat: "PHIEU" },
-      { id: "04", name: "04.Phieu bo sung dang vien", label: "Phiếu bổ sung hồ sơ đảng viên", cat: "PHIEU" },
-      { id: "05", name: "05.Quyet dinh ket nap dang vien", label: "Quyết định kết nạp đảng viên", cat: "QUYET_DINH" },
-      { id: "06", name: "06.Quyet dinh ket nap lai nguoi vao dang", label: "Quyết định kết nạp lại người vào Đảng", cat: "QUYET_DINH" },
-      { id: "07", name: "07.Quyet dinh cong nhan dang vien chinh thuc", label: "Quyết định công nhận đảng viên chính thức", cat: "QUYET_DINH" },
-      { id: "08", name: "08.Quyet dinh cua cap uy co tham quyen xoa ten dang vien du bi", label: "Quyết định cấp ủy có thẩm quyền xoá tên dự bị", cat: "QUYET_DINH" },
-      { id: "09", name: "09.Quyet dinh cong nhan dang vien sau khi khac phuc, thuc hien dung quy dinh ve tham quyen, thu tuc ket nap dang vien", label: "QĐ công nhận sau khắc phục thủ tục kết nạp", cat: "QUYET_DINH" },
-      { id: "10", name: "10.Quyet dinh cong nhan dang vien chinh thuc sau khi khac phuc, thuc hien dung quy dinh ve tham quyen, thu tuc", label: "QĐ công nhận chính thức sau khắc phục", cat: "QUYET_DINH" },
-      { id: "11", name: "11.Quyet dinh huy quyet dinh ket nap dang vien sai quy dinh, khong dung tieu chuan, dieu kien", label: "Hủy QĐ kết nạp sai quy định", cat: "QUYET_DINH" },
-      { id: "12", name: "12.Quyet dinh huy quyet dinh ket nap lai dang vien sai quy dinh, khong dung tieu chuan, dieu kien", label: "Hủy QĐ kết nạp lại sai quy định", cat: "QUYET_DINH" },
-      { id: "13", name: "13.Quyet dinh huy quyet dinh cong nhan dang vien chinh thuc sai quy dinh, khong dung tieu chuan, dieu kien", label: "Hủy QĐ chính thức sai quy định", cat: "QUYET_DINH" },
-      { id: "14", name: "14.Quyet dinh khoi phuc quyen cua dang vien", label: "Quyết định khôi phục quyền đảng viên", cat: "QUYET_DINH" },
-      { id: "15", name: "15.Quyet dinh noi lai sinh hoat dang cua dang vien", label: "Quyết định nối lại sinh hoạt đảng", cat: "QUYET_DINH" },
-      { id: "16", name: "16.Quyet dinh xoa ten trong danh sach dang vien", label: "Quyết định xoá tên trong danh sách", cat: "QUYET_DINH" },
-      { id: "17", name: "17.Quyet dinh cho dang vien ra khoi dang", label: "Quyết định cho đảng viên ra khỏi Đảng", cat: "QUYET_DINH" },
-      { id: "18", name: "18.Giay xac nhan tuoi dang", label: "Giấy xác nhận tuổi Đảng", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "19", name: "19.Quyet dinh phat the dang vien cho ca nhan dang vien", label: "Quyết định phát thẻ đảng viên", cat: "QUYET_DINH" },
-      { id: "20", name: "20.Quyet dinh tang huy hieu dang doi voi ca nhan dang vien", label: "Quyết định tặng Huy hiệu Đảng", cat: "QUYET_DINH" },
-      { id: "21", name: "21.Quyet dinh truy tang huy hieu dang doi voi ca nhan dang vien", label: "Quyết định truy tặng Huy hiệu Đảng", cat: "QUYET_DINH" },
-      { id: "22", name: "22.Quyet dinh ky luat dang", label: "Quyết định kỷ luật Đảng", cat: "QUYET_DINH" },
-      { id: "23", name: "23.Quyet dinh khen thuong", label: "Quyết định khen thưởng", cat: "QUYET_DINH" },
-      { id: "24", name: "24.Quyet dinh dinh chi sinh hoat dang", label: "Quyết định đình chỉ sinh hoạt đảng", cat: "QUYET_DINH" },
-      { id: "25", name: "25.Quyet dinh dinh chi cap uy", label: "Quyết định đình chỉ cấp ủy", cat: "QUYET_DINH" },
-      { id: "26", name: "26.Quyet dinh gia han dinh chi sinh hoat dang", label: "Gia hạn đình chỉ sinh hoạt đảng", cat: "QUYET_DINH" },
-      { id: "27", name: "27.Quyet dinh gia han dinh chi cap uy", label: "Gia hạn đình chỉ cấp ủy", cat: "QUYET_DINH" },
-      { id: "28", name: "28.Quyet dinh giai quyet khieu nai", label: "Quyết định giải quyết khiếu nại", cat: "QUYET_DINH" },
-      { id: "29", name: "29.Quyet dinh giai quyet to cao", label: "Quyết định giải quyết tố cáo", cat: "QUYET_DINH" },
-      { id: "30", name: "30.Quyet dinh dinh chi chuc vu trong dang doi voi ca nhan", label: "Đình chỉ chức vụ trong đảng", cat: "QUYET_DINH" },
-      { id: "31", name: "31.Quyet dinh cho tro lai sinh hoat cap uy", label: "Cho trở lại sinh hoạt cấp ủy/đảng", cat: "QUYET_DINH" },
-      { id: "32", name: "32.Thong bao ket luan giai quyet to cao", label: "Thông báo kết luận tố cáo", cat: "CONG_VAN_BAO_CAO" },
-      { id: "33", name: "33.Thong bao ve viec khong giai quyet khieu nai ky luat dang", label: "TB không giải quyết khiếu nại kỷ luật", cat: "CONG_VAN_BAO_CAO" },
-      { id: "34", name: "34.Ket luan kiem tra cua uy ban kiem tra - doan kiem tra khi co dau hieu vi pham", label: "Kết luận kiểm tra khi có dấu hiệu vi phạm", cat: "CONG_VAN_BAO_CAO" },
-      { id: "35", name: "35.Ket luan minh oan - khong vi pham cua co quan co tham quyen", label: "Kết luận minh oan/không vi phạm", cat: "CONG_VAN_BAO_CAO" },
-      { id: "36", name: "36.Quyet dinh ky luat hanh chinh", label: "Quyết định kỷ luật hành chính", cat: "QUYET_DINH" },
-      { id: "37", name: "37.Don xin vao dang", label: "Đơn xin vào Đảng", cat: "DON_TOKHAI" },
-      { id: "38", name: "38.Giay chung nhan hoc lop nhan thuc ve dang", label: "Chứng nhận học nhận thức về Đảng", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "39", name: "39.Giay gioi thieu nguoi vao dang", label: "Giấy giới thiệu người vào Đảng", cat: "GIOI_THIEU" },
-      { id: "40", name: "40.Nghi quyet gioi thieu doan vien uu tu vao dang", label: "NQ giới thiệu đoàn viên ưu tú", cat: "NGHI_QUYET" },
-      { id: "41", name: "41.Nghi quyet gioi thieu doan vien cong doan vao dang", label: "NQ giới thiệu đoàn viên công đoàn", cat: "NGHI_QUYET" },
-      { id: "42", name: "42.Tong hop y kien nhan xet cua cac doan the chinh tri - xa hoi noi sinh hoat va chi uy noi cu tru doi voi nguoi vao dang", label: "Tổng hợp ý kiến nhận xét người vào Đảng", cat: "KIEM_DIEM" },
-      { id: "43", name: "43.Nghi quyet de nghi ket nap dang vien cua chi bo", label: "NQ đề nghị kết nạp đảng của chi bộ", cat: "NGHI_QUYET" },
-      { id: "44", name: "44.Bao cao ve viec tham dinh nghi quyet cua chi bo de nghi ket nap dang vien cua dang uy bo phan", label: "BC thẩm định NQ kết nạp Đảng của ĐU bộ phận", cat: "CONG_VAN_BAO_CAO" },
-      { id: "45", name: "45.Nghi quyet de nghi ket nap dang vien cua dang uy co so", label: "NQ đề nghị kết nạp của ĐU cơ sở", cat: "NGHI_QUYET" },
-      { id: "46", name: "46.Giay chung nhan hoc lop dang vien moi", label: "Chứng nhận học lớp đảng viên mới", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "47", name: "47.Ban tu kiem diem cua dang vien du bi", label: "Bản tự kiểm điểm đảng viên dự bị", cat: "KIEM_DIEM" },
-      { id: "48", name: "48.Ban nhan xet dang vien du bi cua dang vien duoc phan cong giup do", label: "Bản nhận xét của người giúp đỡ dự bị", cat: "KIEM_DIEM" },
-      { id: "49", name: "49.Tong hop y kien nhan xet cua cac doan the chinh tri - xa hoi noi sinh hoat va chi uy noi cu tru doi voi dang vien du bi", label: "Tổng hợp ý kiến nhận xét người vào Đảng", cat: "KIEM_DIEM" },
-      { id: "50", name: "50.Nghi quyet de nghi cong nhan dang vien chinh thuc cua chi bo", label: "NQ đề nghị chính thức của chi bộ", cat: "NGHI_QUYET" },
-      { id: "51", name: "51.Bao cao ve viec tham dinh nghi quyet cua chi bo de nghi cong nhan dang vien chinh thuc cua dang uy bo phan", label: "BC thẩm định NQ chính thức của ĐU bộ phận", cat: "CONG_VAN_BAO_CAO" },
-      { id: "52", name: "52.Nghi quyet de nghi cong nhan dang vien chinh thuc cua dang uy co so", label: "NQ đề nghị chính thức của ĐU cơ sở", cat: "NGHI_QUYET" },
-      { id: "53", name: "53.Giay chung nhan nguoi vao dang dang trong thoi gian duoc to chuc dang giup do, xem xet ket nap cua cap uy co so", label: "Giấy chứng nhận đang được giúp đỡ", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "54", name: "54.Giay gioi thieu sinh hoat dang chinh thuc", label: "Giấy giới thiệu sinh hoạt đảng chính thức", cat: "GIOI_THIEU" },
-      { id: "55", name: "55.Giay gioi thieu sinh hoat dang tam thoi", label: "Giấy giới thiệu sinh hoạt đảng tạm thời", cat: "GIOI_THIEU" },
-      { id: "56", name: "56.Giay gioi thieu sinh hoat dang ra ngoai nuoc", label: "Giấy giới thiệu SHĐ ra ngoài nước", cat: "GIOI_THIEU" },
-      { id: "57", name: "57.Phieu cong tac chinh thuc ngoai nuoc", label: "Phiếu công tác chính thức ngoài nước", cat: "PHIEU" },
-      { id: "58", name: "58.Phieu cong tac tam thoi ngoai nuoc", label: "Phiếu công tác tạm thời ngoài nước", cat: "PHIEU" },
-      { id: "59", name: "59.Giay gioi thieu sinh hoat dang noi bo", label: "Giấy giới thiệu SHĐ nội bộ", cat: "GIOI_THIEU" },
-      { id: "60", name: "60.Phieu bao dang vien chuyen sinh hoat dang chinh thuc", label: "Phiếu báo chuyển SHĐ chính thức", cat: "PHIEU" },
-      { id: "61", name: "61.Ban tu kiem diem hang nam va khi chuyen sinh hoat dang", label: "Bản tự kiểm điểm hằng năm / chuyển SHĐ", cat: "KIEM_DIEM" },
-      { id: "62", name: "62.Ban tu kiem diem tai thoi diem chuyen sinh hoat dang", label: "Bản tự kiểm điểm khi chuyển SHĐ", cat: "KIEM_DIEM" },
-      { id: "63", name: "63.Ban kiem diem trong thoi gian sinh hoat dang o nuoc ngoai", label: "Bản kiểm điểm sinh hoạt ở nước ngoài", cat: "KIEM_DIEM" },
-      { id: "64", name: "64.Quyet dinh bieu duong dang vien bang van ban hoac ghi trong nghi quyet chi bo", label: "QĐ biểu dương đảng viên", cat: "QUYET_DINH" },
-      { id: "65", name: "65.Ban tu kiem diem cua dang vien vi pham trong qua trinh xem xet ky luat", label: "Bản kiểm điểm vi phạm xét kỷ luật", cat: "KIEM_DIEM" },
-      { id: "66", name: "66.Thong bao vi pham cua co quan phap luat - ban sao ban an hinh su gui cap uy", label: "Thông báo vi phạm của cơ quan pháp luật", cat: "CONG_VAN_BAO_CAO" },
-      { id: "67", name: "67.Quyet dinh giai quyet khieu nai ve ky luat hanh chinh", label: "Giải quyết khiếu nại kỷ luật hành chính", cat: "QUYET_DINH" },
-      { id: "68", name: "68.Ban an hinh su co hieu luc phap luat", label: "Bản án hình sự có hiệu lực pháp luật", cat: "KHAC" },
-      { id: "69", name: "69.Ket luan thanh tra - kiem toan lien quan den ca nhan dang vien", label: "Kết luận thanh tra/kiểm toán", cat: "CONG_VAN_BAO_CAO" },
-      { id: "70", name: "70.Bang - chung chi ly luan chinh tri", label: "Bằng/chứng chỉ lý luận chính trị", cat: "KHAC" },
-      { id: "71", name: "71.Quyet dinh cap lai huy hieu dang bi mat doi voi ca nhan dang vien", label: "Cấp lại Huy hiệu Đảng bị mất", cat: "QUYET_DINH" },
-      { id: "72", name: "72.Quyet dinh cap lai the dang vien bi mat cho ca nhan dang vien", label: "Cấp lại thẻ đảng viên bị mất", cat: "QUYET_DINH" },
-      { id: "73", name: "73.Quyet dinh doi lai the dang vien bi hong, bi sai cho ca nhan dang vien", label: "Đổi lại thẻ đảng bị hỏng, sai", cat: "QUYET_DINH" },
-      { id: "74", name: "74.Quyet dinh cua toa an nhan dan - trich luc ho tich ve thay doi ho ten", label: "QĐ Tòa án/Hộ tịch thay đổi họ tên", cat: "KHAC" },
-      { id: "75", name: "75.Khai sinh goc - ket luan dinh chinh ngay thang nam sinh cua co quan co tham quyen", label: "Khai sinh gốc/Đính chính ngày sinh", cat: "KHAC" },
-      { id: "76", name: "76.Xac nhan cua ubnd - co quan cong an ve thay doi que quan, noi cu tru", label: "Xác nhận đổi quê quán, nơi cư trú", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "77", name: "77.Quyet dinh xac dinh lai dan toc cua ubnd cap tinh", label: "Xác định lại dân tộc của UBND tỉnh", cat: "QUYET_DINH" },
-      { id: "78", name: "78.Ket luan huy van bang - xac dinh van bang khong hop le", label: "Hủy văn bằng / không hợp lệ", cat: "CONG_VAN_BAO_CAO" },
-      { id: "79", name: "79.Don xin mien cong tac va sinh hoat dang", label: "Đơn xin miễn công tác và SHĐ", cat: "DON_TOKHAI" },
-      { id: "80", name: "80.Giay xac nhan cua co so y te co tham quyen", label: "Xác nhận cơ sở y tế", cat: "CHUNG_NHAN_XAC_NHAN" },
-      { id: "81", name: "81.Nghi quyet chi bo ve viec cho dang vien mien cong tac va sinh hoat dang", label: "NQ chi bộ cho miễn công tác và SHĐ", cat: "NGHI_QUYET" },
-      { id: "82", name: "82.Van ban bo sung ly lich sau khi ve nuoc", label: "Bổ sung lý lịch sau khi về nước", cat: "LY_LICH" },
-      { id: "83", name: "83.Giay chung tu cua dang vien", label: "Giấy chứng tử của đảng viên", cat: "KHAC" },
-      { id: "84", name: "84.Ban tuong trinh ve viec mat ho so dang vien kem ban kiem diem trach nhiem", label: "Tường trình mất hồ sơ đảng viên", cat: "KIEM_DIEM" },
-      { id: "85", name: "85.Phieu dang vien cu", label: "Phiếu đảng viên cũ", cat: "PHIEU" },
-      { id: "86", name: "86.Cac van bang, chung chi chuyen mon, nghiep vu", label: "Văn bằng, chứng chỉ chuyên môn", cat: "KHAC" },
-      { id: "87", name: "87.Cac quyet dinh dieu dong, bo nhiem", label: "Các quyết định điều động, bổ nhiệm", cat: "QUYET_DINH" },
-      { id: "88", name: "88.Quyet dinh nghi huu", label: "Quyết định nghỉ hưu", cat: "QUYET_DINH" },
-      { id: "89", name: "89.Quyet dinh nghi mat suc lao dong", label: "Quyết định nghỉ mất sức lao động", cat: "QUYET_DINH" },
-      { id: "90", name: "90.Quyet dinh phuc vien - chuyen nganh", label: "Quyết định phục viên / chuyển ngành", cat: "QUYET_DINH" },
-      { id: "91", name: "91.Quyet dinh xuat ngu", label: "Quyết định xuất ngũ", cat: "QUYET_DINH" },
-      { id: "92", name: "92.Cong van cua cap uy co so gioi thieu nguoi vao dang", label: "CV cấp ủy cơ sở giới thiệu kết nạp", cat: "CONG_VAN_BAO_CAO" },
-      { id: "93", name: "93.Cong van cua cap uy co tham quyen gioi thieu nguoi vao dang", label: "CV cấp ủy có thẩm quyền giới thiệu", cat: "CONG_VAN_BAO_CAO" },
-      { id: "94", name: "94.Cong van gioi thieu nguoi vao dang da duoc cap uy ra quyet dinh ket nap", label: "CV giới thiệu người đã có QĐ kết nạp", cat: "CONG_VAN_BAO_CAO" },
-      { id: "95", name: "95.Cong van gioi thieu chuyen ra ngoai dang bo cap xa", label: "CV chuyển ra ngoài đảng bộ xã", cat: "CONG_VAN_BAO_CAO" },
-      { id: "96", name: "96.Giay gioi thieu cu dang vien di tham tra ly lich", label: "Giấy giới thiệu đi thẩm tra lý lịch", cat: "GIOI_THIEU" },
-      { id: "97", name: "97.Cong van de nghi tham tra ly lich cua nguoi vao dang", label: "Công văn đề nghị thẩm tra lý lịch", cat: "CONG_VAN_BAO_CAO" },
-      { id: "98", name: "98.Cong van chi dao viec lam lai, dung thu tuc ket nap", label: "CV chỉ đạo làm lại thủ tục kết nạp", cat: "CONG_VAN_BAO_CAO" },
-      { id: "99", name: "99.Cong van chi dao viec lam lai, dung thu tuc cong nhan chinh thuc", label: "CV chỉ đạo làm lại thủ tục công nhận", cat: "CONG_VAN_BAO_CAO" },
-      { id: "100", name: "100.Phieu bao dang vien duoc cong nhan chinh thuc", label: "Phiếu báo được công nhận chính thức", cat: "PHIEU" },
-      { id: "101", name: "101.Phieu bao dang vien ra khoi dang", label: "Phiếu báo đảng viên ra khỏi Đảng", cat: "PHIEU" },
-      { id: "102", name: "102.Phieu bao dang vien tu tran", label: "Phiếu báo đảng viên từ trần", cat: "PHIEU" },
-      { id: "103", name: "103.To khai de nghi tang huy hieu dang", label: "Tờ khai đề nghị tặng Huy hiệu Đảng", cat: "DON_TOKHAI" },
-      { id: "104", name: "104.To khai de nghi truy tang huy hieu dang", label: "Tờ khai đề nghị truy tặng Huy hiệu Đảng", cat: "DON_TOKHAI" },
-      { id: "105", name: "105.Tai lieu khac", label: "Tài liệu khác trong hồ sơ", cat: "KHAC" },
-      { id: "106", name: "MUC LUC", label: "Mục lục hồ sơ (không có tiền tố số)", cat: "KHAC" }
+    // 🌟 DANH MỤC 91 MẪU A3711 ĐƯỢC PHÂN LOẠI NHÓM ĐẦY ĐỦ
+    const RAW_TEMPLATES = [
+      { id: "01", name: "A3711.01.So yeu ly lich", label: "Sơ yếu lý lịch", cat: "LY_LICH" },
+      { id: "02", name: "A3711.02.Quyen ly lich can bo", label: "Quyển lý lịch cán bộ", cat: "LY_LICH" },
+      { id: "03", name: "A3711.03.So yeu ly lich tu khai", label: "Sơ yếu lý lịch tự khai", cat: "LY_LICH" },
+      { id: "04", name: "A3711.04.Phieu bo sung ly lich can bo hang nam hoac khi co thay doi theo yeu cau cua co quan quan ly can bo theo quy dinh", label: "Phiếu bổ sung lý lịch cán bộ hằng năm", cat: "LY_LICH" },
+      {
+        id: "05",
+        name: "A3711.05.Ban sao Can cuoc cong dan",
+        label: "Bản sao CCCD / CMND",
+        cat: "GIAY_TO",
+        variants: [
+          { name: "A3711.05.Ban sao Can cuoc cong dan", label: "Căn cước công dân" },
+          { name: "A3711.05.Ban sao Chung minh nhan dan", label: "Chứng minh nhân dân" }
+        ]
+      },
+      { id: "06", name: "A3711.06.Ban sao Giay khai sinh", label: "Bản sao Giấy khai sinh", cat: "GIAY_TO" },
+      { id: "07", name: "A3711.07.Van ban cua co quan co tham quyen dinh chinh dieu chinh xac dinh lai ve ngay thang nam sinh", label: "Văn bản đính chính, điều chỉnh ngày sinh", cat: "GIAY_TO" },
+      { id: "08", name: "A3711.08.Van ban cua co quan co tham quyen ve thay doi ho ten dan toc que quan noi dang ky ho khau thuong tru", label: "Văn bản thay đổi họ tên, dân tộc, quê quán...", cat: "GIAY_TO" },
+      { id: "09", name: "A3711.09.Bang tot nghiep trung hoc pho thong", label: "Bằng tốt nghiệp THPT", cat: "BANG_CAP" },
+      { id: "10", name: "A3711.10.Bang tot nghiep trung cap", label: "Bằng tốt nghiệp trung cấp", cat: "BANG_CAP" },
+      { id: "11", name: "A3711.11.Bang tot nghiep cao dang", label: "Bằng tốt nghiệp cao đẳng", cat: "BANG_CAP" },
+      { id: "12", name: "A3711.12.Bang tot nghiep dai hoc", label: "Bằng tốt nghiệp đại học", cat: "BANG_CAP" },
+      { id: "13", name: "A3711.13.Bang tot nghiep thac sy", label: "Bằng tốt nghiệp thạc sỹ", cat: "BANG_CAP" },
+      { id: "14", name: "A3711.14.Bang tot nghiep tien sy", label: "Bằng tốt nghiệp tiến sỹ", cat: "BANG_CAP" },
+      {
+        id: "15",
+        name: "A3711.15.Giay xac nhan giao su",
+        label: "Giấy xác nhận giáo sư / phó GS / viện sỹ",
+        cat: "BANG_CAP",
+        variants: [
+          { name: "A3711.15.Giay xac nhan giao su", label: "Giáo sư" },
+          { name: "A3711.15.Giay xac nhan pho giao su", label: "Phó giáo sư" },
+          { name: "A3711.15.Giay xac nhan vien sy", label: "Viện sỹ" }
+        ]
+      },
+      { id: "16", name: "A3711.16.Bang tot nghiep ly luan chinh tri so cap", label: "Bằng/CN lý luận chính trị sơ cấp", cat: "BANG_CAP" },
+      { id: "17", name: "A3711.17.Bang tot nghiep ly luan chinh tri trung cap", label: "Bằng/CN lý luận chính trị trung cấp", cat: "BANG_CAP" },
+      { id: "18", name: "A3711.18.Bang tot nghiep ly luan chinh tri cao cap", label: "Bằng/CN lý luận chính trị cao cấp", cat: "BANG_CAP" },
+      { id: "19", name: "A3711.19.Bang tot nghiep cu nhan ly luan chinh tri", label: "Bằng tốt nghiệp cử nhân lý luận chính trị", cat: "BANG_CAP" },
+      { id: "20", name: "A3711.20.Chung chi boi duong ngach chuyen vien chuyen vien chinh chuyen vien cao cap", label: "Chứng chỉ ngạch chuyên viên / chính / cao cấp", cat: "CHUNG_CHI" },
+      { id: "21", name: "A3711.21.Chung chi boi duong quoc phong an ninh", label: "Chứng chỉ bồi dưỡng quốc phòng - an ninh", cat: "CHUNG_CHI" },
+      { id: "22", name: "A3711.22.Chung chi ngoai ngu tin hoc", label: "Chứng chỉ ngoại ngữ, tin học", cat: "CHUNG_CHI" },
+      { id: "23", name: "A3711.23.Chung chi boi duong chuyen mon nghiep vu", label: "Chứng chỉ bồi dưỡng chuyên môn, nghiệp vụ", cat: "CHUNG_CHI" },
+      { id: "24", name: "A3711.24.Quyet dinh cua cap co tham quyen cu di dao tao boi duong", label: "Quyết định cử đi đào tạo, bồi dưỡng", cat: "TUYEN_DUNG" },
+      { id: "25", name: "A3711.25.Van ban ve ket qua thi tuyen", label: "Văn bản về kết quả thi tuyển", cat: "TUYEN_DUNG" },
+      { id: "26", name: "A3711.26.Van ban ve ket qua xet tuyen", label: "Văn bản về kết quả xét tuyển", cat: "TUYEN_DUNG" },
+      { id: "27", name: "A3711.27.Quyet dinh tuyen dung vao cong chuc", label: "Quyết định tuyển dụng vào công chức", cat: "TUYEN_DUNG" },
+      {
+        id: "28",
+        name: "A3711.28.Quyet dinh tiep nhan lam can bo",
+        label: "QĐ tiếp nhận / bổ nhiệm cán bộ",
+        cat: "TUYEN_DUNG",
+        variants: [
+          { name: "A3711.28.Quyet dinh tiep nhan lam can bo", label: "Tiếp nhận làm cán bộ" },
+          { name: "A3711.28.Quyet dinh bo nhiem lam can bo", label: "Bổ nhiệm làm cán bộ" }
+        ]
+      },
+      { id: "29", name: "A3711.29.Quyet dinh phan cong cong tac sau tuyen dung", label: "Quyết định phân công công tác sau tuyển dụng", cat: "TUYEN_DUNG" },
+      { id: "30", name: "A3711.30.Quyet dinh cong nhan het tap su", label: "Quyết định công nhận hết tập sự", cat: "TUYEN_DUNG" },
+      {
+        id: "31",
+        name: "A3711.31.Hop dong lam viec",
+        label: "Hợp đồng làm việc / Hợp đồng lao động",
+        cat: "TUYEN_DUNG",
+        variants: [
+          { name: "A3711.31.Hop dong lam viec", label: "Hợp đồng làm việc" },
+          { name: "A3711.31.Hop dong lao dong", label: "Hợp đồng lao động" }
+        ]
+      },
+      {
+        id: "32",
+        name: "A3711.32.Quyet dinh bo nhiem vao ngach cong chuc",
+        label: "QĐ bổ nhiệm ngạch CC / xếp hạng CDNN VC",
+        cat: "TUYEN_DUNG",
+        variants: [
+          { name: "A3711.32.Quyet dinh bo nhiem vao ngach cong chuc", label: "Bổ nhiệm vào ngạch công chức" },
+          { name: "A3711.32.Quyet dinh xep hang chuc danh nghe nghiep vien chuc", label: "Xếp hạng chức danh nghề nghiệp viên chức" }
+        ]
+      },
+      {
+        id: "33",
+        name: "A3711.33.Quyet dinh chuyen ngach cong chuc",
+        label: "QĐ chuyển/nâng ngạch CC / hạng CDNN VC",
+        cat: "TUYEN_DUNG",
+        variants: [
+          { name: "A3711.33.Quyet dinh chuyen ngach cong chuc", label: "Chuyển ngạch công chức" },
+          { name: "A3711.33.Quyet dinh nang ngach cong chuc", label: "Nâng ngạch công chức" },
+          { name: "A3711.33.Quyet dinh chuyen hang chuc danh nghe nghiep vien chuc", label: "Chuyển hạng CDNN viên chức" },
+          { name: "A3711.33.Quyet dinh nang hang chuc danh nghe nghiep vien chuc", label: "Nâng hạng CDNN viên chức" }
+        ]
+      },
+      { id: "34", name: "A3711.34.Quyet dinh phe duyet quy hoach chuc danh cap uy lanh dao quan ly", label: "QĐ phê duyệt quy hoạch chức danh lãnh đạo", cat: "QUYET_DINH" },
+      { id: "35", name: "A3711.35.Quyet dinh ve viec bo nhiem chuc vu lanh dao quan ly", label: "QĐ về việc bổ nhiệm chức vụ lãnh đạo, quản lý", cat: "QUYET_DINH" },
+      { id: "36", name: "A3711.36.Quyet dinh ve viec chi dinh tham gia cap uy thuong vu cap uy giu chuc vu lanh dao quan ly", label: "QĐ chỉ định tham gia cấp ủy lãnh đạo", cat: "QUYET_DINH" },
+      { id: "37", name: "A3711.37.Quyet dinh ve viec bo nhiem lai chuc vu lanh dao quan ly", label: "QĐ bổ nhiệm lại chức vụ lãnh đạo, quản lý", cat: "QUYET_DINH" },
+      { id: "38", name: "A3711.38.Quyet dinh ve viec dieu dong can bo", label: "QĐ về việc điều động cán bộ", cat: "QUYET_DINH" },
+      { id: "39", name: "A3711.39.Quyet dinh ve viec luan chuyen can bo", label: "QĐ về việc luân chuyển cán bộ", cat: "QUYET_DINH" },
+      { id: "40", name: "A3711.40.Quyet dinh ve viec biet phai can bo", label: "QĐ về việc biệt phái cán bộ", cat: "QUYET_DINH" },
+      { id: "41", name: "A3711.41.Quyet dinh ve viec cho thoi giu chuc vu", label: "QĐ về việc cho thôi giữ chức vụ", cat: "QUYET_DINH" },
+      { id: "42", name: "A3711.42.Quyet dinh ve viec tu chuc", label: "QĐ về việc từ chức", cat: "QUYET_DINH" },
+      { id: "43", name: "A3711.43.Quyet dinh ve viec mien nhiem", label: "QĐ về việc miễn nhiệm", cat: "QUYET_DINH" },
+      { id: "44", name: "A3711.44.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi chuan y ket qua bau cu", label: "Tờ trình đề nghị chuẩn y kết quả bầu cử", cat: "TO_TRINH" },
+      { id: "45", name: "A3711.45.Van ban cua co quan co tham quyen quan ly can bo theo quy dinh ve cho chu truong viec bo nhiem gioi thieu can bo ung cu", label: "Văn bản cho chủ trương bổ nhiệm/ứng cử", cat: "VAN_BAN_BC" },
+      { id: "46", name: "A3711.46.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi quy hoach can bo", label: "Tờ trình/báo cáo về đề nghị quy hoạch cán bộ", cat: "TO_TRINH" },
+      { id: "47", name: "A3711.47.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi bo nhiem gioi thieu can bo ung cu", label: "Tờ trình/báo cáo đề nghị bổ nhiệm/ứng cử", cat: "TO_TRINH" },
+      { id: "48", name: "A3711.48.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi bo nhiem lai can bo", label: "Tờ trình/báo cáo đề nghị bổ nhiệm lại cán bộ", cat: "TO_TRINH" },
+      { id: "49", name: "A3711.49.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi dieu dong can bo", label: "Tờ trình/báo cáo về đề nghị điều động cán bộ", cat: "TO_TRINH" },
+      { id: "50", name: "A3711.50.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi luan chuyen can bo", label: "Tờ trình/báo cáo về đề nghị luân chuyển cán bộ", cat: "TO_TRINH" },
+      { id: "51", name: "A3711.51.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi biet phai can bo", label: "Tờ trình/báo cáo về đề nghị biệt phái cán bộ", cat: "TO_TRINH" },
+      { id: "52", name: "A3711.52.To trinh bao cao cua co quan tham muu ve to chuc can bo ve de nghi cho can bo thoi giu chuc vu tu chuc mien nhiem can bo", label: "Tờ trình cho thôi giữ chức vụ, từ chức, miễn nhiệm", cat: "TO_TRINH" },
+      { id: "53", name: "A3711.53.Van ban tham dinh nhan su cua cac don vi co chuc nang theo doi cong tac can bo bao ve chinh tri noi bo", label: "Văn bản thẩm định nhân sự (BVCTNB)", cat: "VAN_BAN_BC" },
+      { id: "54", name: "A3711.54.Van ban cua Ban To chuc Trung uong de nghi Uy ban Kiem tra Trung uong Ban Noi chinh Trung uong Dang uy Cong an Trung uong Thanh tra Chinh phu Kiem toan Nha nuoc ve ra soat tham dinh tham tra cung cap thong tin lien quan den nhan su", label: "Văn bản BTCTW đề nghị rà soát nhân sự", cat: "VAN_BAN_BC" },
+      { id: "55", name: "A3711.55.Van ban cua Uy ban Kiem tra Trung uong Ban Noi chinh Trung uong Dang uy Cong an Trung uong Thanh tra Chinh phu Kiem toan Nha nuoc ve ket qua ra soat tham dinh tham tra cung cap thong tin lien quan den nhan su", label: "Văn bản kết quả rà soát nhân sự của cơ quan TW", cat: "VAN_BAN_BC" },
+      { id: "56", name: "A3711.56.Van ban cua co quan to chuc de nghi uy ban kiem tra ban dang cac co quan noi chinh cap uy to chuc dang co quan don vi ve ra soat tham dinh tham tra cung cap thong tin lien quan den nhan su", label: "Văn bản CQTC đề nghị rà soát thông tin nhân sự", cat: "VAN_BAN_BC" },
+      { id: "57", name: "A3711.57.Van ban cua uy ban kiem tra ban dang cac co quan noi chinh cap uy to chuc dang co quan don vi ve ket qua ra soat tham dinh tham tra cung cap thong tin lien quan den nhan su", label: "Văn bản kết quả rà soát thông tin nhân sự", cat: "VAN_BAN_BC" },
+      { id: "58", name: "A3711.58.Van ban de nghi cac cap uy to chuc dang co quan don vi lien quan bao cao giai trinh noi dung lien quan den nhan su", label: "Văn bản đề nghị báo cáo giải trình nhân sự", cat: "VAN_BAN_BC" },
+      { id: "59", name: "A3711.59.Van ban bao cao giai trinh cua cac cap uy to chuc dang co quan don vi ve noi dung lien quan den nhan su", label: "Văn bản báo cáo giải trình về nhân sự", cat: "VAN_BAN_BC" },
+      { id: "60", name: "A3711.60.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi quy hoach can bo", label: "Tờ trình/văn bản đề nghị quy hoạch cán bộ", cat: "TO_TRINH" },
+      { id: "61", name: "A3711.61.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi bo nhiem gioi thieu can bo ung cu", label: "Tờ trình/văn bản đề nghị bổ nhiệm/ứng cử", cat: "TO_TRINH" },
+      { id: "62", name: "A3711.62.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi dieu dong can bo", label: "Tờ trình/văn bản đề nghị điều động cán bộ", cat: "TO_TRINH" },
+      { id: "63", name: "A3711.63.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi luan chuyen can bo", label: "Tờ trình/văn bản đề nghị luân chuyển cán bộ", cat: "TO_TRINH" },
+      { id: "64", name: "A3711.64.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi biet phai can bo", label: "Tờ trình/văn bản đề nghị biệt phái cán bộ", cat: "TO_TRINH" },
+      { id: "65", name: "A3711.65.To trinh van ban cua cac cap uy to chuc dang co quan don vi de nghi cho can bo thoi giu chuc vu tu chuc mien nhiem can bo", label: "Tờ trình đề nghị thôi chức, từ chức, miễn nhiệm", cat: "TO_TRINH" },
+      { id: "66", name: "A3711.66.Giay kham suc khoe cua co so y te co tham quyen", label: "Giấy khám sức khỏe của cơ sở y tế", cat: "DANH_GIA_KHAC" },
+      { id: "67", name: "A3711.67.Ban ke khai tai san thu nhap", label: "Bản kê khai tài sản, thu nhập", cat: "DANH_GIA_KHAC" },
+      { id: "68", name: "A3711.68.Ket luan cua cap co tham quyen ve tieu chuan chinh tri doi voi nhan su", label: "Kết luận về tiêu chuẩn chính trị nhân sự", cat: "VAN_BAN_BC" },
+      { id: "69", name: "A3711.69.Van ban cua co quan chuc nang co tham quyen ve ket luan thanh tra kiem tra giam sat kiem toan dieu tra hoac ket qua giai quyet don thu khieu nai to cao lien quan den trach nhiem cua can bo", label: "Kết luận thanh tra, giải quyết khiếu nại tố cáo", cat: "VAN_BAN_BC" },
+      { id: "70", name: "A3711.70.Van ban cua cap co tham quyen quan ly can bo ve ket qua danh gia xep loai doi voi can bo dinh ky quy nam", label: "Văn bản kết quả đánh giá, xếp loại định kỳ", cat: "VAN_BAN_BC" },
+      { id: "71", name: "A3711.71.Nhan xet danh gia cua co quan co tham quyen doi voi can bo de thuc hien cac khau trong cong tac can bo", label: "Nhận xét, đánh giá thực hiện các khâu công tác", cat: "VAN_BAN_BC" },
+      { id: "72", name: "A3711.72.Nhan xet danh gia xep loai cua co quan co tham quyen doi voi can bo dinh ky quy nam", label: "Nhận xét, đánh giá, xếp loại định kỳ", cat: "VAN_BAN_BC" },
+      { id: "73", name: "A3711.73.Ban tu kiem diem tu danh gia xep loai cua can bo dinh ky quy nam", label: "Bản tự kiểm điểm định kỳ quý, năm", cat: "DANH_GIA_KHAC" },
+      { id: "74", name: "A3711.74.Quyet dinh nang bac luong thuong xuyen", label: "Quyết định nâng bậc lương thường xuyên", cat: "QUYET_DINH" },
+      { id: "75", name: "A3711.75.Quyet dinh nang bac luong truoc thoi han", label: "Quyết định nâng bậc lương trước thời hạn", cat: "QUYET_DINH" },
+      { id: "76", name: "A3711.76.Quyet dinh huong phu cap tham nien", label: "Quyết định hưởng phụ cấp thâm niên", cat: "QUYET_DINH" },
+      { id: "77", name: "A3711.77.Quyet dinh huong phu cap chuc vu", label: "Quyết định hưởng phụ cấp chức vụ", cat: "QUYET_DINH" },
+      { id: "78", name: "A3711.78.Quyet dinh huong phu cap khac", label: "Quyết định hưởng phụ cấp khác", cat: "QUYET_DINH" },
+      { id: "79", name: "A3711.79.Quyet dinh khen thuong", label: "Quyết định khen thưởng", cat: "QUYET_DINH" },
+      {
+        id: "80",
+        name: "A3711.80.Giay cong nhan danh hieu nghe sy uu tu",
+        label: "Giấy công nhận Nghệ sỹ / Nhà giáo / Thầy thuốc",
+        cat: "DANH_GIA_KHAC",
+        variants: [
+          { name: "A3711.80.Giay cong nhan danh hieu nghe sy uu tu", label: "Nghệ sỹ ưu tú" },
+          { name: "A3711.80.Giay cong nhan danh hieu nghe sy nhan dan", label: "Nghệ sỹ nhân dân" },
+          { name: "A3711.80.Giay cong nhan danh hieu nha giao uu tu", label: "Nhà giáo ưu tú" },
+          { name: "A3711.80.Giay cong nhan danh hieu nha giao nhan dan", label: "Nhà giáo nhân dân" },
+          { name: "A3711.80.Giay cong nhan danh hieu thay thuoc uu tu", label: "Thầy thuốc ưu tú" },
+          { name: "A3711.80.Giay cong nhan danh hieu thay thuoc nhan dan", label: "Thầy thuốc nhân dân" }
+        ]
+      },
+      { id: "81", name: "A3711.81.Quyet dinh ky luat", label: "Quyết định kỷ luật", cat: "QUYET_DINH" },
+      { id: "82", name: "A3711.82.Quyet dinh nghi huu", label: "Quyết định nghỉ hưu", cat: "QUYET_DINH" },
+      { id: "83", name: "A3711.83.Quyet dinh nghi huu truoc tuoi", label: "Quyết định nghỉ hưu trước tuổi", cat: "QUYET_DINH" },
+      { id: "84", name: "A3711.84.Quyet dinh phuc vien", label: "Quyết định phục viên", cat: "QUYET_DINH" },
+      { id: "85", name: "A3711.85.Quyet dinh chuyen nganh", label: "Quyết định chuyển ngành", cat: "QUYET_DINH" },
+      { id: "86", name: "A3711.86.Quyet dinh xuat ngu", label: "Quyết định xuất ngũ", cat: "QUYET_DINH" },
+      { id: "87", name: "A3711.87.Quyet dinh cho thoi viec", label: "Quyết định cho thôi việc", cat: "QUYET_DINH" },
+      { id: "88", name: "A3711.88.Quyet dinh cham dut hop dong lam viec", label: "Quyết định chấm dứt hợp đồng làm việc", cat: "QUYET_DINH" },
+      { id: "89", name: "A3711.89.Cac quyet dinh khac lien quan den can bo va cong tac can bo", label: "Các quyết định khác về công tác cán bộ", cat: "QUYET_DINH" },
+      { id: "90", name: "A3711.90.Giay chung tu", label: "Giấy chứng tử", cat: "DANH_GIA_KHAC" },
+      { id: "91", name: "A3711.91.Tai lieu khac lien quan den ca nhan", label: "Tài liệu khác liên quan đến cá nhân", cat: "DANH_GIA_KHAC" }
     ];
 
-    let directoryHandle = null;
-    let fileHandlesList = [];
+    const TEMPLATES = [];
+    RAW_TEMPLATES.forEach(tpl => {
+      if (tpl.variants && tpl.variants.length > 0) {
+        tpl.variants.forEach(v => {
+          TEMPLATES.push({ id: tpl.id, name: v.name, label: `${tpl.label} ➔ ${v.label}`, cat: tpl.cat, isVariant: true });
+        });
+      } else {
+        TEMPLATES.push(tpl);
+      }
+    });
+
+    let dirWorkingHandle = null;
+    let dirOrigHandle = null;
+    let backupDirHandle = null;
+
+    let workingFiles = [];
+    let origFiles = [];
+    let missingOrigFiles = [];
+
     let currentSelectedFileIndex = -1;
     let selectedTemplateBase = "";
     let originalCurrentFileName = "";
-    let hideRenamed = false;
-    let pendingFileToAutoFix = null;
     let currentCategory = "ALL";
+    let currentTabFilter = "ALL";
+    let pendingFileToAutoFix = null;
 
-    const btnSelectFolder = document.getElementById('btnSelectFolder');
+    let reorderItems = [];
+    let currentReorderId = "";
+    let currentReorderStandardName = "";
+
+    const renameHistory = [];
+    const initialNameMap = new Map();
+
+    // 🌟 BỘ NHỚ ĐỆM HASH SHA-256 GIÚP TỐI ƯU HIỆU NĂNG TỨC THÌ
+    const hashCache = new Map();
+    let currentActiveBlobUrl = null;
+    let currentModalBlobUrl = null;
+
+    const btnSelectWorkingDir = document.getElementById('btnSelectWorkingDir');
+    const btnSelectOrigDir = document.getElementById('btnSelectOrigDir');
+    const btnOpenReorder = document.getElementById('btnOpenReorder');
+    const btnUndo = document.getElementById('btnUndo');
+    const btnOpenAudit = document.getElementById('btnOpenAudit');
     const fileListContainer = document.getElementById('fileListContainer');
     const templateListContainer = document.getElementById('templateListContainer');
     const pdfViewer = document.getElementById('pdfViewer');
     const emptyPreview = document.getElementById('emptyPreview');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewMeta = document.getElementById('previewMeta');
     const searchTemplate = document.getElementById('searchTemplate');
     const newFileNamePreview = document.getElementById('newFileNamePreview');
     const subVersion = document.getElementById('subVersion');
     const btnApplyRename = document.getElementById('btnApplyRename');
     const btnResetOriginal = document.getElementById('btnResetOriginal');
-    const fileCount = document.getElementById('fileCount');
     const statusToast = document.getElementById('statusToast');
     const progressFill = document.getElementById('progressFill');
     const progressText = document.getElementById('progressText');
-    const hideRenamedCb = document.getElementById('hideRenamedCb');
 
     function autoResizeTextarea() {
       newFileNamePreview.style.height = 'auto';
       newFileNamePreview.style.height = (newFileNamePreview.scrollHeight + 4) + 'px';
     }
-
     newFileNamePreview.addEventListener('input', autoResizeTextarea);
 
-    window.setCategoryFilter = function(cat, btn) {
+    // TÍNH BĂM NHANH VỚI CACHING THÔNG MINH
+    async function getOrCalcHash(fileHandle) {
+      try {
+        const file = await fileHandle.getFile();
+        const cacheKey = `${fileHandle.name}_${file.size}_${file.lastModified}`;
+        if (hashCache.has(cacheKey)) {
+          return hashCache.get(cacheKey);
+        }
+        const buffer = await file.arrayBuffer();
+        const digest = await crypto.subtle.digest('SHA-256', buffer);
+        const hash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+        hashCache.set(cacheKey, hash);
+        return hash;
+      } catch (e) { return ""; }
+    }
+
+    function extractId(fileName) {
+      if (!fileName) return "";
+      const clean = fileName.trim();
+      const mA = clean.match(/^[A-Za-z0-9]+\.(\d{1,3})/i);
+      if (mA) return mA[1].padStart(2, '0');
+      const mNum = clean.match(/^(\d{1,3})/);
+      if (mNum) return mNum[1].padStart(2, '0');
+      return "KHAC";
+    }
+
+    function parseSubVersion(fileName) {
+      const clean = fileName.replace(/\.pdf$/i, '');
+      const lastDot = clean.lastIndexOf('.');
+      if (lastDot > 0) {
+        const potentialSub = clean.substring(lastDot + 1);
+        const num = parseInt(potentialSub, 10);
+        if (!isNaN(num) && num.toString() === potentialSub) {
+          return { base: clean.substring(0, lastDot), sub: num };
+        }
+      }
+      return { base: clean, sub: 0 };
+    }
+
+    function isSameIdGroup(nameA, nameB) {
+      const idA = extractId(nameA);
+      const idB = extractId(nameB);
+      if (idA !== "KHAC" && idB !== "KHAC") return idA === idB;
+      return parseSubVersion(nameA).base.toLowerCase() === parseSubVersion(nameB).base.toLowerCase();
+    }
+
+    // 1. MỞ THƯ MỤC LÀM VIỆC
+    btnSelectWorkingDir.addEventListener('click', async () => {
+      try {
+        dirWorkingHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+        btnSelectWorkingDir.textContent = `📂 ${dirWorkingHandle.name}`;
+        btnSelectWorkingDir.style.background = "#15803d";
+        backupDirHandle = await dirWorkingHandle.getDirectoryHandle('_BACKUP_GOC', { create: true });
+
+        initialNameMap.clear();
+        await loadWorkingFiles(true);
+        showToast("Đã nạp file và hiển thị PDF xem trước!");
+      } catch (e) { }
+    });
+
+    // 2. MỞ THƯ MỤC GỐC ĐỐI CHIẾU
+    btnSelectOrigDir.addEventListener('click', async () => {
+      try {
+        dirOrigHandle = await window.showDirectoryPicker({ mode: 'read' });
+        btnSelectOrigDir.textContent = `📁 Gốc: ${dirOrigHandle.name}`;
+        btnSelectOrigDir.style.background = "#334155";
+        showToast("Đang so khớp với thư mục gốc...");
+        await compareWithOrigDir();
+      } catch (e) { }
+    });
+
+    async function loadWorkingFiles(isInitial = false) {
+      workingFiles = [];
+      const dupCountMap = new Map();
+
+      for await (const entry of dirWorkingHandle.values()) {
+        if (entry.kind === 'file' && entry.name.toLowerCase().endsWith('.pdf')) {
+          const hash = await getOrCalcHash(entry);
+          workingFiles.push({ name: entry.name, handle: entry, hash: hash, isMissing: false });
+
+          if (isInitial && !initialNameMap.has(entry.name)) {
+            initialNameMap.set(entry.name, entry.name);
+          }
+
+          if (hash) {
+            dupCountMap.set(hash, (dupCountMap.get(hash) || 0) + 1);
+          }
+        }
+      }
+
+      workingFiles.forEach(f => {
+        f.isDuplicate = f.hash && dupCountMap.get(f.hash) > 1;
+      });
+
+      // SẮP XẾP TỰ NHIÊN: .1 -> .2 -> ... -> .9 -> .10 -> .11
+      workingFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+
+      if (dirOrigHandle) {
+        await compareWithOrigDir();
+      } else {
+        updateStats();
+        renderFileList();
+        if (workingFiles.length > 0 && currentSelectedFileIndex === -1) {
+          // Khi mới mở, ưu tiên chọn ngay file chưa chuẩn đầu tiên
+          const firstUnfinished = workingFiles.findIndex(f => !isStandardName(f.name));
+          selectFile(firstUnfinished !== -1 ? firstUnfinished : 0);
+        }
+      }
+    }
+
+    async function compareWithOrigDir() {
+      if (!dirOrigHandle) return;
+      origFiles = [];
+      missingOrigFiles = [];
+
+      for await (const entry of dirOrigHandle.values()) {
+        if (entry.kind === 'file' && entry.name.toLowerCase().endsWith('.pdf')) {
+          const hash = await getOrCalcHash(entry);
+          origFiles.push({ name: entry.name, handle: entry, hash: hash });
+        }
+      }
+
+      const workingHashes = new Set(workingFiles.map(w => w.hash));
+      origFiles.forEach(orig => {
+        if (!workingHashes.has(orig.hash)) {
+          missingOrigFiles.push({
+            name: orig.name,
+            handle: orig.handle,
+            hash: orig.hash,
+            isMissing: true
+          });
+        }
+      });
+
+      missingOrigFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+
+      document.getElementById('tabBtnMissing').style.display = missingOrigFiles.length > 0 ? "inline-block" : "none";
+      document.getElementById('cntMissing').textContent = missingOrigFiles.length;
+
+      updateStats();
+      renderFileList();
+
+      if (missingOrigFiles.length > 0) {
+        showToast(`⚠️ Phát hiện ${missingOrigFiles.length} file gốc chưa có ở bản làm việc!`);
+      }
+    }
+
+    function isStandardName(name) {
+      const base = name.replace(/\.pdf$/i, '');
+      return TEMPLATES.some(t => base === t.name || base.startsWith(t.name + '.'));
+    }
+
+    function updateStats() {
+      const total = workingFiles.length;
+      const finished = workingFiles.filter(f => isStandardName(f.name)).length;
+      const unfinished = total - finished;
+      const dup = workingFiles.filter(f => f.isDuplicate).length;
+
+      document.getElementById('cntAll').textContent = total;
+      document.getElementById('cntFinished').textContent = finished;
+      document.getElementById('cntUnfinished').textContent = unfinished;
+      document.getElementById('cntDup').textContent = dup;
+
+      document.getElementById('tabBtnDup').style.display = dup > 0 ? "inline-block" : "none";
+
+      const pct = total === 0 ? 0 : Math.round((finished / total) * 100);
+      progressFill.style.width = pct + "%";
+      progressText.textContent = `${finished}/${total} (${pct}%)`;
+    }
+
+    window.setTabFilter = function (tab, btn) {
+      currentTabFilter = tab;
+      document.querySelectorAll('.file-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFileList();
+    };
+
+    function getCurrentlyDisplayedList() {
+      if (currentTabFilter === 'ALL') return workingFiles;
+      if (currentTabFilter === 'UNFINISHED') return workingFiles.filter(f => !isStandardName(f.name));
+      if (currentTabFilter === 'FINISHED') return workingFiles.filter(f => isStandardName(f.name));
+      if (currentTabFilter === 'DUP') return workingFiles.filter(f => f.isDuplicate);
+      if (currentTabFilter === 'MISSING') return missingOrigFiles;
+      return workingFiles;
+    }
+
+    function renderFileList() {
+      fileListContainer.innerHTML = "";
+      const listToDisplay = getCurrentlyDisplayedList();
+
+      if (listToDisplay.length === 0) {
+        fileListContainer.innerHTML = `<li style="padding:24px;text-align:center;color:var(--text-muted);font-size:12px;">Không có file nào trong mục này.</li>`;
+        return;
+      }
+
+      listToDisplay.forEach((fileItem, idx) => {
+        const li = document.createElement('li');
+        const isActive = (!fileItem.isMissing && workingFiles.indexOf(fileItem) === currentSelectedFileIndex);
+        li.className = `file-item ${isActive ? 'active' : ''}`;
+        li.id = `file-item-${idx}`;
+
+        const isOk = !fileItem.isMissing && isStandardName(fileItem.name);
+        let badgeHtml = '';
+        if (fileItem.isMissing) {
+          badgeHtml = '<span class="badge badge-missing">BỊ THIẾU</span>';
+        } else if (fileItem.isDuplicate) {
+          badgeHtml = '<span class="badge badge-dup">TRÙNG RUỘT</span>';
+        } else {
+          badgeHtml = `<span class="badge ${isOk ? 'badge-ok' : 'badge-pending'}">${isOk ? '✓ Chuẩn' : 'Chưa chuẩn'}</span>`;
+        }
+
+        const origName = initialNameMap.get(fileItem.name);
+        const hasRenamed = origName && origName !== fileItem.name;
+
+        let arrowsHtml = '';
+        if (!fileItem.isMissing) {
+          const prevItem = idx > 0 ? listToDisplay[idx - 1] : null;
+          const nextItem = idx < listToDisplay.length - 1 ? listToDisplay[idx + 1] : null;
+
+          const canMoveUp = prevItem && !prevItem.isMissing && isSameIdGroup(fileItem.name, prevItem.name);
+          const canMoveDown = nextItem && !nextItem.isMissing && isSameIdGroup(fileItem.name, nextItem.name);
+          const hasGroupSiblings = listToDisplay.some((f, i) => i !== idx && !f.isMissing && isSameIdGroup(fileItem.name, f.name));
+
+          if (hasGroupSiblings) {
+            arrowsHtml = `
+              <div class="inline-arrows">
+                <button class="btn-arrow-sm" title="${canMoveUp ? 'Hoán đổi lên với file cùng ID (▲)' : 'Đã ở vị trí đầu tiên của ID này'}" 
+                        onclick="event.stopPropagation(); moveFileInline(${idx}, -1)" 
+                        ${!canMoveUp ? 'disabled' : ''}>▲</button>
+                <button class="btn-arrow-sm" title="${canMoveDown ? 'Hoán đổi xuống với file cùng ID (▼)' : 'Đã ở vị trí cuối cùng của ID này'}" 
+                        onclick="event.stopPropagation(); moveFileInline(${idx}, 1)" 
+                        ${!canMoveDown ? 'disabled' : ''}>▼</button>
+              </div>
+            `;
+          }
+        }
+
+        li.innerHTML = `
+          <div class="file-header-row">
+            <span class="file-name-span" title="${fileItem.name}">${fileItem.name}</span>
+            <div style="display:flex; align-items:center; gap:4px;">
+              ${arrowsHtml}
+              ${badgeHtml}
+            </div>
+          </div>
+          ${hasRenamed ? `<div style="font-size:10.5px;color:var(--text-muted);">Gốc: ${origName}</div>` : ''}
+          ${fileItem.isMissing ? `<div style="font-size:10.5px;color:var(--danger);font-weight:600;">(Chưa có ở bản làm việc - bấm để bù vào)</div>` : ''}
+        `;
+
+        li.onclick = () => {
+          if (fileItem.isMissing) {
+            selectMissingFile(fileItem);
+          } else {
+            selectFile(workingFiles.indexOf(fileItem));
+          }
+        };
+
+        fileListContainer.appendChild(li);
+      });
+    }
+
+    window.moveFileInline = async function (displayIndex, direction) {
+      const list = getCurrentlyDisplayedList();
+      const currentItem = list[displayIndex];
+      const targetIndex = displayIndex + direction;
+
+      if (targetIndex < 0 || targetIndex >= list.length) return;
+      const targetItem = list[targetIndex];
+
+      if (currentItem.isMissing || targetItem.isMissing) return;
+
+      if (!isSameIdGroup(currentItem.name, targetItem.name)) {
+        alert(`⛔ KHÓA AN TOÀN: File "${currentItem.name}" không thể hoán đổi với "${targetItem.name}" vì KHÁC NHÓM ID!\n\nChỉ được hoán đổi thứ tự giữa các file CÙNG ID với nhau.`);
+        return;
+      }
+
+      const nameA = currentItem.name;
+      const nameB = targetItem.name;
+
+      showToast(`Đang hoán đổi vị trí: ${nameA} ⇄ ${nameB}...`);
+
+      try {
+        await swapTwoFilesOnDisk(currentItem.handle, targetItem.handle, nameA, nameB);
+        showToast(`✅ Đã đổi thứ tự: ${nameA} ⇄ ${nameB}`);
+        await loadWorkingFiles();
+
+        const newIdx = workingFiles.findIndex(f => f.name === nameB);
+        if (newIdx !== -1) selectFile(newIdx);
+      } catch (err) {
+        console.error(err);
+        alert("Lỗi khi hoán đổi: " + err.message);
+      }
+    };
+
+    async function swapTwoFilesOnDisk(handleA, handleB, nameA, nameB) {
+      const fileA = await handleA.getFile();
+      const bufA = await fileA.arrayBuffer();
+      const fileB = await handleB.getFile();
+      const bufB = await fileB.arrayBuffer();
+
+      if (backupDirHandle) {
+        const bA = await backupDirHandle.getFileHandle(nameA, { create: true });
+        const wA = await bA.createWritable();
+        await wA.write(bufA);
+        await wA.close();
+
+        const bB = await backupDirHandle.getFileHandle(nameB, { create: true });
+        const wB = await bB.createWritable();
+        await wB.write(bufB);
+        await wB.close();
+      }
+
+      const tempName = `_temp_swap_${Date.now()}.pdf`;
+
+      const tempHandle = await dirWorkingHandle.getFileHandle(tempName, { create: true });
+      const wTemp = await tempHandle.createWritable();
+      await wTemp.write(bufA);
+      await wTemp.close();
+      await dirWorkingHandle.removeEntry(nameA);
+
+      const hA = await dirWorkingHandle.getFileHandle(nameA, { create: true });
+      const w1 = await hA.createWritable();
+      await w1.write(bufB);
+      await w1.close();
+      await dirWorkingHandle.removeEntry(nameB);
+
+      const hB = await dirWorkingHandle.getFileHandle(nameB, { create: true });
+      const w2 = await hB.createWritable();
+      await w2.write(bufA);
+      await w2.close();
+      await dirWorkingHandle.removeEntry(tempName);
+
+      renameHistory.push({ oldName: nameA, newName: nameB });
+      renameHistory.push({ oldName: nameB, newName: nameA });
+    }
+
+    async function selectFile(index) {
+      if (index < 0 || index >= workingFiles.length) return;
+      currentSelectedFileIndex = index;
+      renderFileList();
+
+      const entry = workingFiles[index];
+      originalCurrentFileName = entry.name;
+      pendingFileToAutoFix = null;
+
+      newFileNamePreview.value = entry.name;
+      selectedTemplateBase = "";
+      subVersion.value = "";
+      autoResizeTextarea();
+
+      // Cuộn file vào giữa vùng nhìn
+      setTimeout(() => {
+        const elem = document.querySelector(`.file-item.active`);
+        if (elem) elem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }, 50);
+
+      // Giải phóng bộ nhớ Blob URL cũ tránh rò rỉ RAM
+      if (currentActiveBlobUrl) {
+        URL.revokeObjectURL(currentActiveBlobUrl);
+      }
+
+      const file = await entry.handle.getFile();
+      currentActiveBlobUrl = URL.createObjectURL(file);
+      pdfViewer.src = currentActiveBlobUrl;
+      pdfViewer.style.display = 'block';
+      emptyPreview.style.display = 'none';
+
+      previewTitle.textContent = `Đang xem: ${entry.name}`;
+      previewMeta.textContent = isStandardName(entry.name) ? "✓ Đã chuẩn" : "Cần chuẩn hóa";
+    }
+
+    async function selectMissingFile(missingItem) {
+      if (currentActiveBlobUrl) {
+        URL.revokeObjectURL(currentActiveBlobUrl);
+      }
+      const file = await missingItem.handle.getFile();
+      currentActiveBlobUrl = URL.createObjectURL(file);
+      pdfViewer.src = currentActiveBlobUrl;
+      pdfViewer.style.display = 'block';
+      emptyPreview.style.display = 'none';
+
+      previewTitle.textContent = `Xem bản GỐC bị thiếu: ${missingItem.name}`;
+      previewMeta.textContent = "⚠️ Hãy chọn tên ở cột phải và bấm Lưu để thêm vào thư mục";
+
+      newFileNamePreview.value = missingItem.name;
+      selectedTemplateBase = "";
+      subVersion.value = "";
+      autoResizeTextarea();
+    }
+
+    // 3. TÌM KIẾM MẪU VĂN BẢN
+    window.setCategoryFilter = function (cat, btn) {
       currentCategory = cat;
       document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -456,15 +1490,11 @@
 
       const filtered = TEMPLATES.filter(t => {
         const matchesCategory = (currentCategory === "ALL" || t.cat === currentCategory);
-        const matchesSearch = !keyword || 
-          t.id.includes(keyword) || 
-          t.name.toLowerCase().includes(keyword) || 
-          t.label.toLowerCase().includes(keyword);
-
+        const matchesSearch = !keyword || t.id.includes(keyword) || t.name.toLowerCase().includes(keyword) || t.label.toLowerCase().includes(keyword);
         return matchesCategory && matchesSearch;
       });
 
-      filtered.forEach((item) => {
+      filtered.forEach(item => {
         const li = document.createElement('li');
         li.className = "template-item";
         li.innerHTML = `
@@ -472,7 +1502,7 @@
             <div style="font-weight: 500;">${item.name}</div>
             <div style="font-size: 11px; color: var(--text-muted);">${item.label}</div>
           </div>
-          <span class="template-tag">#${item.id}</span>
+          <span style="font-size:10.5px;background:#e2e8f0;padding:2px 5px;border-radius:4px;">#${item.id}</span>
         `;
         li.onclick = () => selectTemplate(item.name);
         templateListContainer.appendChild(li);
@@ -480,25 +1510,15 @@
     }
 
     renderTemplates();
-
-    searchTemplate.addEventListener('input', (e) => {
-      renderTemplates(e.target.value);
-    });
-
-    searchTemplate.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const first = templateListContainer.querySelector('.template-item');
-        if (first) first.click();
-      }
-    });
+    searchTemplate.addEventListener('input', (e) => renderTemplates(e.target.value));
 
     function getSmartSuffix(baseName) {
       pendingFileToAutoFix = null;
-      let maxSuffix = -1; 
+      let maxSuffix = -1;
       let baseFileFound = null;
       const baseLower = baseName.toLowerCase();
 
-      fileHandlesList.forEach(f => {
+      workingFiles.forEach(f => {
         const fname = f.name.toLowerCase();
         if (fname === baseLower + '.pdf') {
           baseFileFound = f;
@@ -506,20 +1526,19 @@
           const suffixStr = fname.substring(baseLower.length + 1, fname.length - 4);
           const num = parseInt(suffixStr, 10);
           if (!isNaN(num) && num.toString() === suffixStr) {
-             if (num > maxSuffix) maxSuffix = num;
+            if (num > maxSuffix) maxSuffix = num;
           }
         }
       });
 
       if (maxSuffix > 0) return (maxSuffix + 1).toString();
-      
+
       if (baseFileFound) {
-        if (currentSelectedFileIndex >= 0 && fileHandlesList[currentSelectedFileIndex].name.toLowerCase() !== baseLower + '.pdf') {
+        if (currentSelectedFileIndex >= 0 && workingFiles[currentSelectedFileIndex].name.toLowerCase() !== baseLower + '.pdf') {
           pendingFileToAutoFix = baseFileFound;
           return "2";
         }
       }
-
       return "";
     }
 
@@ -533,224 +1552,511 @@
     function updateNewFileName() {
       if (!selectedTemplateBase) return;
       const suffix = subVersion.value.trim();
-      let finalName = selectedTemplateBase + (suffix ? (suffix.startsWith('.') ? suffix : '.' + suffix) : '') + ".pdf";
-      newFileNamePreview.value = finalName;
+      newFileNamePreview.value = selectedTemplateBase + (suffix ? (suffix.startsWith('.') ? suffix : '.' + suffix) : '') + ".pdf";
       autoResizeTextarea();
     }
 
     subVersion.addEventListener('input', updateNewFileName);
-
-    btnSelectFolder.addEventListener('click', async () => {
-      try {
-        directoryHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-        await loadFilesFromDirectory();
-      } catch (err) {
-        if (err.name !== 'AbortError') showToast("Vui lòng mở trên Google Chrome hoặc Microsoft Edge.");
-      }
-    });
-
-    function isStandardName(name) {
-      const base = name.replace(/\.pdf$/i, '');
-      return TEMPLATES.some(t => {
-         if (base === t.name) return true;
-         if (base.startsWith(t.name + '.')) return true;
-         return false;
-      });
-    }
-
-    hideRenamedCb.addEventListener('change', (e) => {
-      hideRenamed = e.target.checked;
-      renderFileList();
-    });
-
-    async function loadFilesFromDirectory() {
-      fileHandlesList = [];
-      for await (const entry of directoryHandle.values()) {
-        if (entry.kind === 'file' && entry.name.toLowerCase().endsWith('.pdf')) {
-          fileHandlesList.push(entry);
-        }
-      }
-
-      fileHandlesList.sort((a, b) => a.name.localeCompare(b.name));
-      updateProgress();
-      renderFileList();
-
-      if (fileHandlesList.length > 0) {
-        selectFile(Math.max(0, currentSelectedFileIndex >= 0 ? currentSelectedFileIndex : 0));
-      }
-    }
-
-    function updateProgress() {
-      const renamedCount = fileHandlesList.filter(f => isStandardName(f.name)).length;
-      const total = fileHandlesList.length;
-      const pct = total === 0 ? 0 : Math.round((renamedCount / total) * 100);
-      progressFill.style.width = pct + "%";
-      progressText.textContent = `${renamedCount}/${total} (${pct}%)`;
-    }
-
-    function renderFileList() {
-      fileListContainer.innerHTML = "";
-      let visibleFiles = 0;
-
-      fileHandlesList.forEach((entry, idx) => {
-        const isOk = isStandardName(entry.name);
-        if (hideRenamed && isOk) return;
-
-        visibleFiles++;
-        const li = document.createElement('li');
-        li.className = `file-item ${idx === currentSelectedFileIndex ? 'active' : ''}`;
-        li.id = `file-item-${idx}`;
-        
-        li.innerHTML = `
-          <span class="file-name-span" title="${entry.name}">${entry.name}</span>
-          ${isOk ? '<span class="badge-ok">✓ Chuẩn</span>' : ''}
-        `;
-        li.onclick = () => selectFile(idx);
-        fileListContainer.appendChild(li);
-      });
-
-      fileCount.textContent = fileHandlesList.length;
-      
-      if(visibleFiles === 0 && fileHandlesList.length > 0) {
-        fileListContainer.innerHTML = `<li style="padding: 24px; text-align: center; color: var(--success); font-weight: 600;">Toàn bộ file đã được chuẩn hóa!</li>`;
-      }
-    }
-
-    async function selectFile(index) {
-      if (index < 0 || index >= fileHandlesList.length) return;
-      currentSelectedFileIndex = index;
-      renderFileList();
-
-      const entry = fileHandlesList[index];
-      originalCurrentFileName = entry.name;
-      pendingFileToAutoFix = null;
-      
-      newFileNamePreview.value = entry.name;
-      selectedTemplateBase = "";
-      subVersion.value = "";
-      autoResizeTextarea();
-
-      const currentElement = document.getElementById(`file-item-${index}`);
-      if (currentElement) {
-        currentElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      }
-
-      const file = await entry.getFile();
-      const fileUrl = URL.createObjectURL(file);
-      pdfViewer.src = fileUrl;
-      pdfViewer.style.display = 'block';
-      emptyPreview.style.display = 'none';
-    }
 
     btnResetOriginal.addEventListener('click', () => {
       if (!originalCurrentFileName) return;
       newFileNamePreview.value = originalCurrentFileName;
       selectedTemplateBase = "";
       subVersion.value = "";
-      pendingFileToAutoFix = null;
       autoResizeTextarea();
-      showToast("Đã khôi phục tên gốc của file.");
+      showToast("Đã khôi phục tên gốc!");
     });
 
+    // 🌟 4. LƯU TÊN FILE VÀ TỰ ĐỘNG NHẢY CHUẨN XÁC ĐẾN FILE CHƯA CHUẨN KẾ TIẾP
     async function executeRename() {
+      if (!dirWorkingHandle) {
+        showToast("Chưa chọn Thư Mục Làm Việc!");
+        return;
+      }
+
       let newName = newFileNamePreview.value.trim();
       if (!newName) {
         showToast("Tên file không được để trống!");
         return;
       }
-      
       newName = newName.replace(/(\.pdf)+$/gi, '') + '.pdf';
 
-      if (currentSelectedFileIndex < 0 || !fileHandlesList[currentSelectedFileIndex]) {
-        showToast("Chưa chọn file cần đổi.");
-        return;
-      }
-
-      const currentHandle = fileHandlesList[currentSelectedFileIndex];
-      if (currentHandle.name === newName) {
-        showToast("Tên mới trùng khớp với tên hiện tại.");
-        return;
-      }
-
-      if (pendingFileToAutoFix && pendingFileToAutoFix.name !== currentHandle.name) {
+      const activeMissing = missingOrigFiles.find(m => m.name === newFileNamePreview.value || selectedTemplateBase);
+      if (currentSelectedFileIndex < 0 && activeMissing) {
         try {
-          const oldTargetName = pendingFileToAutoFix.name.replace(/\.pdf$/i, '.1.pdf');
-          const oldFile = await pendingFileToAutoFix.getFile();
-          const fixHandle = await directoryHandle.getFileHandle(oldTargetName, { create: true });
-          const fixWritable = await fixHandle.createWritable();
-          await fixWritable.write(await oldFile.arrayBuffer());
-          await fixWritable.close();
-          await directoryHandle.removeEntry(pendingFileToAutoFix.name);
+          const origFile = await activeMissing.handle.getFile();
+          const buffer = await origFile.arrayBuffer();
+          const newHandle = await dirWorkingHandle.getFileHandle(newName, { create: true });
+          const writable = await newHandle.createWritable();
+          await writable.write(buffer);
+          await writable.close();
+
+          showToast(`Đã bù file: ${newName}`);
+          await loadWorkingFiles();
+          return;
         } catch (e) {
-          console.warn("Không thể đồng bộ file cũ:", e);
+          alert("Lỗi ghi file: " + e.message);
+          return;
         }
       }
 
-      const existsIndex = fileHandlesList.findIndex(f => f.name.toLowerCase() === newName.toLowerCase());
-      if (existsIndex !== -1 && existsIndex !== currentSelectedFileIndex) {
-        if(!confirm(`⚠️ File "${newName}" ĐÃ TỒN TẠI!\n\nBạn có muốn ghi đè lên không?`)) {
-           return;
-        }
+      if (currentSelectedFileIndex < 0 || !workingFiles[currentSelectedFileIndex]) {
+        showToast("Chưa chọn file nào để đổi.");
+        return;
+      }
+
+      const currentHandle = workingFiles[currentSelectedFileIndex].handle;
+      const oldName = currentHandle.name;
+
+      if (oldName === newName) {
+        showToast("Tên mới trùng với tên hiện tại.");
+        return;
+      }
+
+      const exists = workingFiles.some((f, idx) => idx !== currentSelectedFileIndex && f.name.toLowerCase() === newName.toLowerCase());
+      if (exists) {
+        alert(`⛔ KHÓA AN TOÀN: File "${newName}" ĐÃ TỒN TẠI trong thư mục!\nVui lòng thêm số bản phụ (.1, .2) để tránh làm mất file cũ.`);
+        return;
       }
 
       try {
         const originalFile = await currentHandle.getFile();
-        const newFileHandle = await directoryHandle.getFileHandle(newName, { create: true });
+        const fileBuffer = await originalFile.arrayBuffer();
+
+        if (pendingFileToAutoFix && pendingFileToAutoFix.name !== currentHandle.name) {
+          try {
+            const oldTargetName = pendingFileToAutoFix.name.replace(/\.pdf$/i, '.1.pdf');
+            const oldFileObj = await pendingFileToAutoFix.handle.getFile();
+            const fixHandle = await dirWorkingHandle.getFileHandle(oldTargetName, { create: true });
+            const fixWritable = await fixHandle.createWritable();
+            await fixWritable.write(await oldFileObj.arrayBuffer());
+            await fixWritable.close();
+            await dirWorkingHandle.removeEntry(pendingFileToAutoFix.name);
+          } catch (e) { }
+        }
+
+        if (backupDirHandle) {
+          const backupHandle = await backupDirHandle.getFileHandle(oldName, { create: true });
+          const backupWritable = await backupHandle.createWritable();
+          await backupWritable.write(fileBuffer);
+          await backupWritable.close();
+        }
+
+        const newFileHandle = await dirWorkingHandle.getFileHandle(newName, { create: true });
         const writable = await newFileHandle.createWritable();
-        await writable.write(await originalFile.arrayBuffer());
+        await writable.write(fileBuffer);
         await writable.close();
 
-        await directoryHandle.removeEntry(currentHandle.name);
-        showToast(`Đã lưu: ${newName}`);
+        await dirWorkingHandle.removeEntry(oldName);
 
-        await loadFilesFromDirectory();
+        renameHistory.push({ oldName: oldName, newName: newName });
+        const initName = initialNameMap.get(oldName) || oldName;
+        initialNameMap.delete(oldName);
+        initialNameMap.set(newName, initName);
+
+        showToast(`Đã đổi: ${newName}`);
+
+        const savedOldIndex = currentSelectedFileIndex;
+        await loadWorkingFiles();
         subVersion.value = "";
         pendingFileToAutoFix = null;
 
-        let nextIndex = fileHandlesList.findIndex((f, idx) => idx >= currentSelectedFileIndex && !isStandardName(f.name));
-        if (nextIndex === -1) nextIndex = fileHandlesList.findIndex(f => !isStandardName(f.name)); 
-        if (nextIndex !== -1) selectFile(nextIndex);
-        else if (fileHandlesList.length > 0) selectFile(0);
+        // 🌟 LOGIC NHẢY THÔNG MINH: TÌM FILE CHƯA CHUẨN KẾ TIẾP
+        let targetIndex = -1;
+
+        // Quét tiếp từ vị trí hiện tại trở xuống cuối danh sách
+        for (let i = savedOldIndex; i < workingFiles.length; i++) {
+          if (!isStandardName(workingFiles[i].name)) {
+            targetIndex = i;
+            break;
+          }
+        }
+
+        // Nếu không có, quét vòng lại từ đầu danh sách lên vị trí vừa sửa
+        if (targetIndex === -1) {
+          for (let i = 0; i < savedOldIndex; i++) {
+            if (!isStandardName(workingFiles[i].name)) {
+              targetIndex = i;
+              break;
+            }
+          }
+        }
+
+        // Thực hiện chọn file chưa chuẩn tiếp theo
+        if (targetIndex !== -1) {
+          selectFile(targetIndex);
+        } else {
+          showToast("🎉 Chúc mừng! Toàn bộ file trong thư mục đã được chuẩn hóa!");
+          if (workingFiles.length > 0) {
+            selectFile(Math.min(savedOldIndex, workingFiles.length - 1));
+          }
+        }
 
       } catch (err) {
-        console.error(err);
-        showToast("Lỗi hệ thống: " + err.message);
+        alert("Lỗi: " + err.message);
+      }
+    }
+
+    // 5. HOÀN TÁC (UNDO)
+    async function executeUndo() {
+      if (renameHistory.length === 0) {
+        showToast("Chưa có thao tác nào để hoàn tác.");
+        return;
+      }
+
+      const lastAction = renameHistory.pop();
+      try {
+        const currentHandle = await dirWorkingHandle.getFileHandle(lastAction.newName);
+        const file = await currentHandle.getFile();
+        const buffer = await file.arrayBuffer();
+
+        const restoredHandle = await dirWorkingHandle.getFileHandle(lastAction.oldName, { create: true });
+        const writable = await restoredHandle.createWritable();
+        await writable.write(buffer);
+        await writable.close();
+
+        await dirWorkingHandle.removeEntry(lastAction.newName);
+
+        const initName = initialNameMap.get(lastAction.newName);
+        initialNameMap.delete(lastAction.newName);
+        initialNameMap.set(lastAction.oldName, initName);
+
+        showToast(`↩️ Đã hoàn tác về: ${lastAction.oldName}`);
+        await loadWorkingFiles();
+
+        const targetIndex = workingFiles.findIndex(f => f.name === lastAction.oldName);
+        if (targetIndex !== -1) selectFile(targetIndex);
+      } catch (e) {
+        showToast("Lỗi hoàn tác: " + e.message);
       }
     }
 
     btnApplyRename.addEventListener('click', executeRename);
+    btnUndo.addEventListener('click', executeUndo);
 
+    // BẢNG ĐỔI SỐ LOẠT MỞ RỘNG
+    btnOpenReorder.addEventListener('click', () => {
+      if (!dirWorkingHandle || workingFiles.length === 0) {
+        showToast("Vui lòng mở Thư Mục Làm Việc trước!");
+        return;
+      }
+      populateReorderGroups();
+      document.getElementById('reorderModal').style.display = 'flex';
+    });
+
+    function populateReorderGroups() {
+      const select = document.getElementById('reorderGroupSelect');
+      select.innerHTML = '<option value="">-- Chọn nhóm theo mã ID --</option>';
+
+      const idGroups = new Map();
+      workingFiles.forEach(f => {
+        const id = extractId(f.name);
+        if (!idGroups.has(id)) idGroups.set(id, []);
+        idGroups.get(id).push(f);
+      });
+
+      const sortedKeys = Array.from(idGroups.keys()).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+      sortedKeys.forEach(id => {
+        const files = idGroups.get(id);
+        const tpl = RAW_TEMPLATES.find(t => t.id === id);
+        const labelText = tpl ? tpl.label : `Nhóm văn bản ${id}`;
+
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = `[ID ${id}] ${labelText} (${files.length} bản)`;
+        select.appendChild(opt);
+      });
+    }
+
+    document.getElementById('reorderGroupSelect').addEventListener('change', (e) => {
+      currentReorderId = e.target.value;
+      if (!currentReorderId) {
+        document.getElementById('reorderTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:30px;">Vui lòng chọn nhóm ID ở phía trên.</td></tr>';
+        document.getElementById('modalPdfViewer').style.display = 'none';
+        document.getElementById('modalEmptyPreview').style.display = 'flex';
+        return;
+      }
+
+      const tpl = RAW_TEMPLATES.find(t => t.id === currentReorderId);
+      currentReorderStandardName = tpl ? tpl.name : "";
+
+      reorderItems = workingFiles
+        .filter(f => extractId(f.name) === currentReorderId)
+        .map(f => {
+          const p = parseSubVersion(f.name);
+          return {
+            oldName: f.name,
+            handle: f.handle,
+            originalBase: p.base,
+            subNum: p.sub,
+            newSubNum: p.sub || 1
+          };
+        });
+
+      reorderItems.sort((a, b) => a.subNum - b.subNum);
+      renderReorderTable();
+
+      if (reorderItems.length > 0) {
+        previewReorderFile(0);
+      }
+    });
+
+    document.getElementById('cbStandardizeName').addEventListener('change', () => {
+      renderReorderTable();
+    });
+
+    function renderReorderTable() {
+      const tbody = document.getElementById('reorderTableBody');
+      tbody.innerHTML = "";
+      const isStandardize = document.getElementById('cbStandardizeName').checked;
+
+      reorderItems.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.id = `reorder-row-${idx}`;
+
+        const baseNameToUse = (isStandardize && currentReorderStandardName) ? currentReorderStandardName : item.originalBase;
+        const targetName = `${baseNameToUse}.${item.newSubNum}.pdf`;
+
+        tr.innerHTML = `
+          <td style="text-align:center;">
+            <button class="btn-arrow-sm" title="Xem PDF" onclick="event.stopPropagation(); previewReorderFile(${idx})">👁️</button>
+          </td>
+          <td style="font-weight:500; font-size:11.5px; word-break:break-all;" title="${item.oldName}">${item.oldName}</td>
+          <td style="text-align:center;">
+            <button class="btn-arrow-sm" onclick="event.stopPropagation(); moveReorderItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+            <button class="btn-arrow-sm" onclick="event.stopPropagation(); moveReorderItem(${idx}, 1)" ${idx === reorderItems.length - 1 ? 'disabled' : ''}>▼</button>
+          </td>
+          <td style="text-align:center;">
+            <input type="number" min="1" class="search-input" style="width:50px;text-align:center;padding:3px;" 
+                   value="${item.newSubNum}" 
+                   onfocus="previewReorderFile(${idx})"
+                   onchange="changeReorderNumber(${idx}, this.value)">
+          </td>
+          <td style="font-weight:600; font-size:11.5px; word-break:break-all; color:${item.oldName !== targetName ? 'var(--primary)' : 'var(--text-muted)'};">
+            ${targetName}
+          </td>
+        `;
+
+        tr.onclick = () => previewReorderFile(idx);
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.previewReorderFile = async function (idx) {
+      if (idx < 0 || idx >= reorderItems.length) return;
+      const item = reorderItems[idx];
+
+      document.querySelectorAll('#reorderTableBody tr').forEach(r => r.classList.remove('active-row'));
+      const activeTr = document.getElementById(`reorder-row-${idx}`);
+      if (activeTr) activeTr.classList.add('active-row');
+
+      if (currentModalBlobUrl) {
+        URL.revokeObjectURL(currentModalBlobUrl);
+      }
+
+      const file = await item.handle.getFile();
+      currentModalBlobUrl = URL.createObjectURL(file);
+
+      const viewer = document.getElementById('modalPdfViewer');
+      viewer.src = currentModalBlobUrl;
+      viewer.style.display = 'block';
+      document.getElementById('modalEmptyPreview').style.display = 'none';
+
+      document.getElementById('modalPreviewTitle').textContent = `[Đang xem]: ${item.oldName}`;
+    };
+
+    window.moveReorderItem = function (idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= reorderItems.length) return;
+
+      const temp = reorderItems[idx];
+      reorderItems[idx] = reorderItems[targetIdx];
+      reorderItems[targetIdx] = temp;
+
+      reorderItems.forEach((it, i) => it.newSubNum = i + 1);
+      renderReorderTable();
+      previewReorderFile(targetIdx);
+    };
+
+    window.changeReorderNumber = function (idx, val) {
+      const num = parseInt(val, 10);
+      if (!isNaN(num) && num > 0) {
+        reorderItems[idx].newSubNum = num;
+        renderReorderTable();
+      }
+    };
+
+    window.autoNumberSequentially = function () {
+      reorderItems.forEach((it, i) => it.newSubNum = i + 1);
+      renderReorderTable();
+      showToast("Đã tự động gán số thứ tự từ 1 đến " + reorderItems.length);
+    };
+
+    window.applyBatchReorder = async function () {
+      if (reorderItems.length === 0) return;
+
+      const newNumbers = reorderItems.map(it => it.newSubNum);
+      const hasDup = new Set(newNumbers).size !== newNumbers.length;
+      if (hasDup) {
+        alert("⚠️ LỖI: Có các file đang bị trùng số mới với nhau! Vui lòng chỉnh lại để mỗi file mang một số riêng biệt.");
+        return;
+      }
+
+      const isStandardize = document.getElementById('cbStandardizeName').checked;
+      showToast("Đang thực hiện đổi số an toàn qua bộ đệm tạm...");
+
+      try {
+        const timestamp = Date.now();
+        const phase1List = [];
+
+        for (let i = 0; i < reorderItems.length; i++) {
+          const item = reorderItems[i];
+          const tempName = `_temp_reorder_${timestamp}_${i}.pdf`;
+
+          const origFile = await item.handle.getFile();
+          const buffer = await origFile.arrayBuffer();
+
+          if (backupDirHandle) {
+            const bHandle = await backupDirHandle.getFileHandle(item.oldName, { create: true });
+            const bWrite = await bHandle.createWritable();
+            await bWrite.write(buffer);
+            await bWrite.close();
+          }
+
+          const tempHandle = await dirWorkingHandle.getFileHandle(tempName, { create: true });
+          const tWrite = await tempHandle.createWritable();
+          await tWrite.write(buffer);
+          await tWrite.close();
+
+          await dirWorkingHandle.removeEntry(item.oldName);
+
+          const baseNameToUse = (isStandardize && currentReorderStandardName) ? currentReorderStandardName : item.originalBase;
+          phase1List.push({ tempName, tempHandle, finalName: `${baseNameToUse}.${item.newSubNum}.pdf` });
+        }
+
+        for (const p of phase1List) {
+          const tFile = await p.tempHandle.getFile();
+          const tBuffer = await tFile.arrayBuffer();
+
+          const finalHandle = await dirWorkingHandle.getFileHandle(p.finalName, { create: true });
+          const fWrite = await finalHandle.createWritable();
+          await fWrite.write(tBuffer);
+          await fWrite.close();
+
+          await dirWorkingHandle.removeEntry(p.tempName);
+        }
+
+        showToast("✅ Đã hoàn tất đánh số lại toàn bộ nhóm bản phụ an toàn!");
+        closeModal('reorderModal');
+        await loadWorkingFiles();
+
+      } catch (err) {
+        console.error(err);
+        alert("Có lỗi khi đánh số lại: " + err.message);
+      }
+    };
+
+    // MODAL AUDIT
+    btnOpenAudit.addEventListener('click', () => {
+      document.getElementById('auditModal').style.display = 'flex';
+      renderAuditData();
+    });
+
+    function renderAuditData() {
+      const auditRenameList = document.getElementById('auditRenameList');
+      auditRenameList.innerHTML = "";
+      let count = 0;
+
+      initialNameMap.forEach((origName, currentName) => {
+        if (origName !== currentName) {
+          count++;
+          const li = document.createElement('li');
+          li.className = "audit-item";
+          li.innerHTML = `
+            <div>
+              <div style="font-weight:600;color:var(--success);">${currentName}</div>
+              <div style="font-size:10.5px;color:var(--text-muted);">Gốc: ${origName}</div>
+            </div>
+            <span style="font-size:10.5px;color:var(--success);font-weight:bold;">Đã đổi</span>
+          `;
+          auditRenameList.appendChild(li);
+        }
+      });
+
+      document.getElementById('auditRenamedCount').textContent = `${count} file đã đổi`;
+      if (count === 0) {
+        auditRenameList.innerHTML = `<li style="padding:15px;text-align:center;color:var(--text-muted);">Chưa đổi tên file nào.</li>`;
+      }
+
+      const auditMissingList = document.getElementById('auditMissingList');
+      auditMissingList.innerHTML = "";
+      const currentBases = workingFiles.map(f => f.name.replace(/\.pdf$/i, '').toLowerCase());
+
+      const missingTemplates = RAW_TEMPLATES.filter(t => {
+        const tLower = t.name.toLowerCase();
+        return !currentBases.some(cb => cb === tLower || cb.startsWith(tLower + '.'));
+      });
+
+      missingTemplates.forEach(t => {
+        const li = document.createElement('li');
+        li.className = "audit-item";
+        li.innerHTML = `
+          <div>
+            <div style="font-weight:600;">${t.name}</div>
+            <div style="font-size:10.5px;color:var(--text-muted);">${t.label}</div>
+          </div>
+          <span style="font-size:10.5px;color:var(--danger);font-weight:bold;">Thiếu</span>
+        `;
+        auditMissingList.appendChild(li);
+      });
+    }
+
+    window.copyMissingItems = function () {
+      const currentBases = workingFiles.map(f => f.name.replace(/\.pdf$/i, '').toLowerCase());
+      const missing = RAW_TEMPLATES.filter(t => {
+        const tLower = t.name.toLowerCase();
+        return !currentBases.some(cb => cb === tLower || cb.startsWith(tLower + '.'));
+      }).map(t => `${t.name} (${t.label})`).join('\n');
+
+      navigator.clipboard.writeText(missing).then(() => showToast("Đã sao chép danh sách mục còn thiếu!"));
+    };
+
+    window.closeModal = function (id) {
+      document.getElementById(id).style.display = 'none';
+      if (id === 'reorderModal') {
+        if (currentModalBlobUrl) URL.revokeObjectURL(currentModalBlobUrl);
+        document.getElementById('modalPdfViewer').src = "";
+      }
+    };
+
+    // PHÍM TẮT THẦN TỐCA
     window.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.key === 'Enter') {
         e.preventDefault();
         executeRename();
-      }
-      else if (e.key === 'F2') {
+      } else if (e.ctrlKey && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        executeUndo();
+      } else if (e.key === 'F2') {
         e.preventDefault();
         searchTemplate.focus();
         searchTemplate.select();
-      }
-      else if (e.altKey && e.key === 'ArrowDown') {
+      } else if (e.altKey && e.key === 'ArrowDown') {
         e.preventDefault();
-        if (currentSelectedFileIndex < fileHandlesList.length - 1) {
-          selectFile(currentSelectedFileIndex + 1);
-        }
-      }
-      else if (e.altKey && e.key === 'ArrowUp') {
+        if (currentSelectedFileIndex < workingFiles.length - 1) selectFile(currentSelectedFileIndex + 1);
+      } else if (e.altKey && e.key === 'ArrowUp') {
         e.preventDefault();
-        if (currentSelectedFileIndex > 0) {
-          selectFile(currentSelectedFileIndex - 1);
-        }
+        if (currentSelectedFileIndex > 0) selectFile(currentSelectedFileIndex - 1);
       }
     });
 
     function showToast(msg) {
       statusToast.textContent = msg;
       statusToast.style.display = 'block';
-      setTimeout(() => {
-        statusToast.style.display = 'none';
-      }, 2500);
+      setTimeout(() => statusToast.style.display = 'none', 2500);
     }
   </script>
 </body>
+
 </html>
